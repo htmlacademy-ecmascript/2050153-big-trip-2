@@ -1,7 +1,7 @@
 # Проект «Большое путешествие»
 
 * Студент: [Наталья Зиновьева](https://up.htmlacademy.ru/ecmascript-individual/2/user/2050153).
-* Наставник: `Неизвестно`.
+* Наставник: [Роман Марченко](https://htmlacademy.ru/profile/id505487).
 
 ---
 
