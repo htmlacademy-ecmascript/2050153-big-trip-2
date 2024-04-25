@@ -1,5 +1,6 @@
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
+const HtmlPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './src/main.js', // Точка входа
@@ -10,6 +11,9 @@ module.exports = {
   },
   devtool: 'source-map', // Генерируем карту исходного кода
   plugins: [ // Подключаем плагины
+    new HtmlPlugin({
+      template: 'public/index.html',
+    }),
     new CopyPlugin({
       patterns: [
         {
