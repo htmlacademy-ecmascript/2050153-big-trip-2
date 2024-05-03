@@ -2,7 +2,7 @@ import {createElement} from '../render.js';
 
 function createPointEditFormTemplate() {
   return (
-    '<li class="trip-events__item">
+    `<li class="trip-events__item">
       <form class="event event--edit" action="#" method="post">
         <header class="event__header">
           <div class="event__type-wrapper">
@@ -97,7 +97,7 @@ function createPointEditFormTemplate() {
         </header>
         <section class="event__details"></section>
       </form>
-    </li>'
+    </li>`
   );
 }
 

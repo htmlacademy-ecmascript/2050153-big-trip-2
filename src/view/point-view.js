@@ -2,7 +2,7 @@ import {createElement} from '../render.js';
 
 function createEventItemTemplate() {
   return (
-    '<li class="trip-events__item">
+    `<li class="trip-events__item">
       <div class="event">
         <time class="event__date" datetime="2019-03-18">MAR 18</time>
         <div class="event__type">
@@ -38,7 +38,7 @@ function createEventItemTemplate() {
           <span class="visually-hidden">Open event</span>
         </button>
       </div>
-    </li>'
+    </li>`
   );
 }
 
