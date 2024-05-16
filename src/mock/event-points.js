@@ -38,8 +38,4 @@ const mockEvents = [
   }
 ];
 
-const getRandomEventPoint = () => {
-  return getRandomArrayElement(mockEvents);
-};
-
-export { getRandomEventPoint };
+export { mockEvents };

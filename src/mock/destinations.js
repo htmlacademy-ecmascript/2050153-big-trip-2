@@ -1,7 +1,7 @@
 import { getRandomInteger, getArrayFromRandomElements, getRandomArrayElement } from '../utils.js';
 import { DESCRIPTION } from '../const.js';
 
-const destinations = [
+const mockDestinations = [
   {
     id: '',
     description: getArrayFromRandomElements(DESCRIPTION);
@@ -41,4 +41,4 @@ const destinations = [
   },
 ];
 
-export {destinations};
+export {mockDestinations};
