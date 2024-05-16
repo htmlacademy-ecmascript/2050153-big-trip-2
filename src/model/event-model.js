@@ -4,10 +4,10 @@ import { mockDestinations } from '../mock/destinations.js';
 
 const EVENT_COUNT = 3;
 
-const getRandomArrey = (arrey) => {
-  return Array.from({length: EVENT_COUNT},
-    () => getRandomArrayElement(arrey).join(', ');
-};
+const getRandomArrey = (arrey) => Array.from(
+  {length: EVENT_COUNT},
+  () => getRandomArrayElement(arrey),
+).join(', ');
 
 export default class EventsModel {
   events = getRandomArrey(mockEvents);
