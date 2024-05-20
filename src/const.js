@@ -1,15 +1,3 @@
-const TYPES = [
-  'Taxi',
-  'Bus',
-  'Train',
-  'Ship',
-  'Drive',
-  'Flight',
-  'Check-in',
-  'Sightseeing',
-  'Restaurant'
-];
-
 const DESTINATION = [
   'Amsterdam',
   'Chamonix',
@@ -36,4 +24,4 @@ const DESCRIPTION = [
   'In rutrum ac purus sit amet tempus. ',
 ];
 
-export { TYPES, DESTINATION, DESCRIPTION };
+export { DESTINATION, DESCRIPTION };

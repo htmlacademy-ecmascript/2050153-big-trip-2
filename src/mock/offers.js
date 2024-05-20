@@ -1,87 +1,170 @@
 import { getArrayFromRandomElements } from '../utils.js';
 
-const OfferByType = {
-  LUGGAGE: 'luggage',
-  COMFORT: 'comfort',
-  MEAL: 'meal',
-  BREAKFAST: 'breakfast',
-  LUNCH: 'lunch',
-  SEATS: 'seats',
-  UBER: 'uber',
-  TREIN: 'train',
-  CAR: 'drive',
-  TICKETS: 'tickets',
-};
+const mockOffers = [
+  {
+    type: 'flight',
+    offers: [
+      {
+        title: 'Add luggage',
+        price: getRandomInteger(10, 1000),
+        id: 'b4c3e4e6-9053-42ce-b747-e281314baa31',
+      },
+      {
+        title: 'Switch to comfort class',
+        price: getRandomInteger(10, 1000),
+        id: 'b4c3e4e6-9053-42ce-b747-e281314baa32',
+      },
+      {
+        title: 'Add meal',
+        price: getRandomInteger(10, 1000),
+        id: 'b4c3e4e6-9053-42ce-b747-e281314baa33',
+      },
+      {
+        title: 'Choose seats',
+        price: getRandomInteger(10, 1000),
+        id: 'b4c3e4e6-9053-42ce-b747-e281314baa36',
+      },
+      {
+        title: 'Travel by train',
+        price: getRandomInteger(10, 1000),
+        id: 'b4c3e4e6-9053-42ce-b747-e281314baa38',
+      },
+      {
+        title: 'Book tickets',
+        price: getRandomInteger(10, 1000),
+        id: 'b4c3e4e6-9053-42ce-b747-e281314baa40',
+      },
+    ],
+  },
+  {
+    type: 'taxi',
+    offers: [
+      {
+        title: 'Switch to comfort class',
+        price: getRandomInteger(10, 1000),
+        id: 'b4c3e4e6-9053-42ce-b747-e281314baa32',
+      },
+      {
+        title: 'Order Uber',
+        price: getRandomInteger(10, 1000),
+        id: 'b4c3e4e6-9053-42ce-b747-e281314baa37',
+      },
+    ],
+  },
+  {
+    type: 'bus',
+    offers: [
+      {
+        title: 'Switch to comfort class',
+        price: getRandomInteger(10, 1000),
+        id: 'b4c3e4e6-9053-42ce-b747-e281314baa32',
+      },
+      {
+        title: 'Choose seats',
+        price: getRandomInteger(10, 1000),
+        id: 'b4c3e4e6-9053-42ce-b747-e281314baa36',
+      },
+      {
+        title: 'Book tickets',
+        price: getRandomInteger(10, 1000),
+        id: 'b4c3e4e6-9053-42ce-b747-e281314baa40',
+      },
+    ],
+  },
+  {
+    type: 'train',
+    offers: [
+      {
+        title: 'Switch to comfort class',
+        price: getRandomInteger(10, 1000),
+        id: 'b4c3e4e6-9053-42ce-b747-e281314baa32',
+      },
+      {
+        title: 'Choose seats',
+        price: getRandomInteger(10, 1000),
+        id: 'b4c3e4e6-9053-42ce-b747-e281314baa36',
+      },
+      {
+        title: 'Book tickets',
+        price: getRandomInteger(10, 1000),
+        id: 'b4c3e4e6-9053-42ce-b747-e281314baa40',
+      },
+      {
+        title: 'Add meal',
+        price: getRandomInteger(10, 1000),
+        id: 'b4c3e4e6-9053-42ce-b747-e281314baa33',
+      },
+      {
+        title: 'Add luggage',
+        price: getRandomInteger(10, 1000),
+        id: 'b4c3e4e6-9053-42ce-b747-e281314baa31',
+      },
+    ],
+  },
+  {
+    type: 'ship',
+    offers: [
+      {
+        title: 'Switch to comfort class',
+        price: getRandomInteger(10, 1000),
+        id: 'b4c3e4e6-9053-42ce-b747-e281314baa32',
+      },
+      {
+        title: 'Choose seats',
+        price: getRandomInteger(10, 1000),
+        id: 'b4c3e4e6-9053-42ce-b747-e281314baa36',
+      },
+      {
+        title: 'Book tickets',
+        price: getRandomInteger(10, 1000),
+        id: 'b4c3e4e6-9053-42ce-b747-e281314baa40',
+      },
+      {
+        title: 'Add luggage',
+        price: getRandomInteger(10, 1000),
+        id: 'b4c3e4e6-9053-42ce-b747-e281314baa31',
+      },
+    ],
+  },
+  {
+    type: 'drive',
+    offers: [
+      {
+        title: 'Rent a car',
+        price: getRandomInteger(10, 1000),
+        id: 'b4c3e4e6-9053-42ce-b747-e281314baa39',
+      },
+    ],
+  },
+  {
+    type: 'check-in',
+    offers: [
+      {
+        title: 'Add breakfast',
+        price: getRandomInteger(10, 1000),
+        id: 'b4c3e4e6-9053-42ce-b747-e281314baa34',
+      }
+    ],
+  },
+  {
+    type: 'sightseeing',
+    offers: [
+      {
+        title: 'Rent a car',
+        price: getRandomInteger(10, 1000),
+        id: 'b4c3e4e6-9053-42ce-b747-e281314baa39',
+      },
+      {
+        title: 'Lunch in city',
+        price: getRandomInteger(10, 1000),
+        id: 'b4c3e4e6-9053-42ce-b747-e281314baa35',
+      },
+    ],
+  },
+  {
+    type: 'restaurant',
+    offers: [],
+  },
+];
 
-const OFFER = {
-  [OfferByType.LUGGAGE]: {
-    offerTitle: 'Add luggage',
-    offerPrice: getRandomInteger(10, 1000),
-  },
-  [OfferByType.COMFORT]: {
-    offerTitle: 'Switch to comfort class',
-    offerPrice: getRandomInteger(10, 1000),
-  },
-  [OfferByType.MEAL]: {
-    offerTitle: 'Add meal',
-    offerPrice: getRandomInteger(10, 1000),
-  },
-  [OfferByType.BREAKFAST]: {
-    offerTitle: 'Add breakfast',
-    offerPrice: getRandomInteger(10, 1000),
-  },
-  [OfferByType.LUNCH]: {
-    offerTitle: 'Lunch in city',
-    offerPrice: getRandomInteger(10, 1000),
-  },
-  [OfferByType.SEATS]: {
-    offerTitle: 'Choose seats',
-    offerPrice: getRandomInteger(10, 1000),
-  },
-  [OfferByType.UBER]: {
-    offerTitle: 'Order Uber',
-    offerPrice: getRandomInteger(10, 1000),
-  },
-  [OfferByType.TREIN]: {
-    offerTitle: 'Travel by train',
-    offerPrice: getRandomInteger(10, 1000),
-  },
-  [OfferByType.CAR]: {
-    offerTitle: 'Rent a car',
-    offerPrice: getRandomInteger(10, 1000),
-  },
-  [OfferByType.TICKETS]: {
-    offerTitle: 'Book tickets',
-    offerPrice: getRandomInteger(10, 1000),
-  },
-};
-
-const OffersByTypeEvent = {
-  'Taxi': ['comfort', 'uber'],
-  'Bus': ['tickets', 'seats', 'comfort'],
-  'Train': ['tickets', 'seats', 'comfort', 'meal', 'luggage'],
-  'Ship': ['tickets', 'comfort', 'meal', 'luggage', 'breakfast', 'lunch'],
-  'Drive': ['drive', 'comfort'],
-  'Flight': ['tickets', 'seats', 'comfort', 'meal', 'luggage'],
-  'Check-in': ['tickets', 'seats', 'train'],
-  'Sightseeing': ['drive', 'train', 'breakfast', 'lunch', 'uber'],
-  'Restaurant': ['meal', 'breakfast', 'lunch', 'uber']
-};
-
-const getOffersByOfferTypes = (typesArrey) => {
-  let offersArrey = [];
-
-  for (let type of typesArrey) {
-    if (OFFER.hasOwnProperty(type)) {
-      offersArrey.push(OFFER[type]);
-    }
-  }
-  return offersArrey;
-};
-
-const getOffers = (type) => {
-  const offers = getOffersByOfferTypes(getArrayFromRandomElements(OffersByTypeEvent.type));
-  return offers
-};
-
-export {getOffers};
+export {mockOffers};
