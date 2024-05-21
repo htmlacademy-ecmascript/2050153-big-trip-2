@@ -3,17 +3,17 @@ import { mockEvents } from '../mock/event-points.js';
 import { mockDestinations } from '../mock/destinations.js';
 import { mockOffers } from '../mock/offers.js';
 
-const EVENT_COUNT = 3;
+const EVENT_COUNT = 4;
 
 const getRandomArrey = (arrey) => Array.from(
   {length: EVENT_COUNT},
   () => getRandomArrayElement(arrey),
-).join(', ');
+).join('');
 
 export default class EventsModel {
   events = getRandomArrey(mockEvents);
   offers = mockOffers;
-  destination = mockDestinations;
+  destinations = mockDestinations;
 
   getEvents() {
     return this.events;
@@ -34,7 +34,7 @@ export default class EventsModel {
   }
 
   getDestination() {
-    return this.destination;
+    return this.destinations;
   }
 
   getDestinationById(id) {

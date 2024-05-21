@@ -1,4 +1,4 @@
-const DESTINATION = [
+const DESTINATIONS = [
   'Amsterdam',
   'Chamonix',
   'Geneva',
@@ -10,7 +10,7 @@ const DESTINATION = [
   'London'
 ];
 
-const DESCRIPTION = [
+const DESCRIPTIONS = [
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ',
   'Cras aliquet varius magna, non porta ligula feugiat eget. ',
   'Fusce tristique felis at fermentum pharetra. ',
@@ -24,4 +24,16 @@ const DESCRIPTION = [
   'In rutrum ac purus sit amet tempus. ',
 ];
 
-export { DESTINATION, DESCRIPTION };
+const TYPES = [
+  'taxi',
+  'bus',
+  'train',
+  'ship',
+  'drive',
+  'flight',
+  'check-in',
+  'sightseeing',
+  'restaurant'
+];
+
+export { DESTINATIONS, DESCRIPTIONS, TYPES };

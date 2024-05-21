@@ -1,38 +1,48 @@
 import { createElement } from '../render.js';
-import { dateFormat, humanizePageDate, differenceInTime } from '../utils.js';
+import { dateFormat, humanizeDate, getDifferenceInTime, capitalizeWords } from '../utils.js';
 
-function createEventItemTemplate(event) {
-  const { type, dateFrom, dateTo, description, isFavorite, price, offers } = event;
+function createOfferTemplate({title, price}) {
+  return (
+    `<li class="event__offer">
+      <span class="event__offer-title">${title}</span>
+      &plus;&euro;&nbsp;
+      <span class="event__offer-price">${price}</span>
+    </li>`
+  );
+}
+
+function createEventItemTemplate(event, offers, destination) {
+  const { type, dateFrom, dateTo, isFavorite, basePrice } = event;
   const { name } = destination;
+
+  const favouriteClassName = isFavorite
+  ? 'event__favorite-btn--active'
+  : '';
 
   return (
     `<li class="trip-events__item">
       <div class="event">
-        <time class="event__date" datetime="${humanizePageDate(dateFrom, dateFormat.DATE_POINT)}">${humanizePageDate(dateFrom, dateFormat.MONTH_DAY)}</time>
+        <time class="event__date" datetime=${dateFrom}>${humanizeDate(dateFrom, dateFormat.MONTH_DAY)}</time>
         <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
         </div>
-        <h3 class="event__title">${type} ${description.name}</h3>
+        <h3 class="event__title">${capitalizeWords(type)} ${name}</h3>
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime="${humanizePageDate(dateFrom, dateFormat.DATE_AND_TIME)}">${humanizePageDate(dateFrom, dateFormat.HOURS)}</time>
+            <time class="event__start-time" datetime="${dateFrom}">${humanizeDate(dateFrom, dateFormat.HOURS)}</time>
             &mdash;
-            <time class="event__end-time" datetime="${humanizePageDate(dateTo, dateFormat.DATE_AND_TIME)}">${humanizePageDate(dateTo, dateFormat.HOURS)}</time>
+            <time class="event__end-time" datetime="${dateTo}">${humanizeDate(dateTo, dateFormat.HOURS)}</time>
           </p>
-          <p class="event__duration">${differenceInTime(dateFrom, dateTo)}M</p>
+          <p class="event__duration">${getDifferenceInTime(dateFrom, dateTo)}M</p>
         </div>
         <p class="event__price">
-          &euro;&nbsp;<span class="event__price-value">${price}</span>
+          &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
         </p>
         <h4 class="visually-hidden">Offers:</h4>
         <ul class="event__selected-offers">
-          <li class="event__offer">
-            <span class="event__offer-title">${offers.title}</span>
-            &plus;&euro;&nbsp;
-            <span class="event__offer-price">${offers.price}</span>
-          </li>
+          ${offers.map((offer) => createOfferTemplate(offer)).join('')}
         </ul>
-        <button class="event__favorite-btn event__favorite-btn--active" type="button">
+        <button class="event__favorite-btn ${favouriteClassName}" type="button">
           <span class="visually-hidden">Add to favorite</span>
           <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
             <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
@@ -47,8 +57,14 @@ function createEventItemTemplate(event) {
 }
 
 export default class EventItemView {
+  constractor({event, offers, destination}) {
+    this.event = event;
+    this.offers = offers;
+    this.destination = destination;
+  }
+
   getTemplate() {
-    return createEventItemTemplate();
+    return createEventItemTemplate(this.event, this.offers, this.destination);
   }
 
   getElement() {

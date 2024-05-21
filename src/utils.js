@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
 const dateFormat = {
-  DATE: 'DD/MM/YY',
+  DATE: 'DD/MM/YYTHH:mm',
   DATE_AND_TIME: 'YYYY-MM-DDTHH:mm',
   MONTH_DAY: 'MMMM DD',
   HOURS: 'THH:mm',
@@ -25,10 +25,12 @@ const getArrayFromRandomElements = (elements) => Array.from(
 ).join(', ');
 
 // Приобразование данных по дате в нужный формат
-const humanizePageDate = (eventDate, format) => {
+const humanizeDate = (eventDate, format) => {
   return eventDate ? dayjs(eventDate).format(format) : '';
 };
 
-const differenceInTime = (date1, date2) => date2.getTime() - date1.getTime();
+const getDifferenceInTime = (date1, date2) => date2.getTime() - date1.getTime();
 
-export { getRandomArrayElement, getRandomInteger, getArrayFromRandomElements, dateFormat, humanizePageDate, differenceInTime };
+const capitalizeWords = (str) => str.replace(/\b\w/g, c => c.toUpperCase());
+
+export { getRandomArrayElement, getRandomInteger, getArrayFromRandomElements, dateFormat, humanizeDate, getDifferenceInTime, capitalizeWords };
