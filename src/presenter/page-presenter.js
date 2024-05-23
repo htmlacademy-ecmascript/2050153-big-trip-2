@@ -17,18 +17,16 @@ export default class PagePresenter {
   }
 
   init() {
-    // render(new TripInfoView(), headerTripInfoElement, RenderPosition.AFTERBEGIN);
-    // render(new EventFilterView(), headerFilterElement);
-
     this.pageEvents = [...this.eventsModel.getEvents()];
 
     render(new EventSortView(), pageMainSortElement);
     render(this.tripListComponent, pageMainSortElement);
+    render(new PointEditFormView(), this.tripListComponent.getElement(), RenderPosition.AFTERBEGIN)
 
     render(new EditPointView({
       event: this.pageEvents[0],
       checkedOffers: [...this.eventsModel.getOfferById(this.pageEvents[0].type, this.pageEvents[0].offers)],
-      offers: this.eventsModel.getOfferByType(this.pageEvents[0].type),
+      offers: this.eventsModel.getOffersByType(this.pageEvents[0].type),
       destination: this.eventsModel.getDestinationById(this.pageEvents[0].destination),
     }), this.tripListComponent.getElement());
 

@@ -3,12 +3,12 @@ import { mockEvents } from '../mock/event-points.js';
 import { mockDestinations } from '../mock/destinations.js';
 import { mockOffers } from '../mock/offers.js';
 
-const EVENT_COUNT = 4;
+const EVENT_COUNT = 3;
 
 const getRandomArrey = (arrey) => Array.from(
   {length: EVENT_COUNT},
   () => getRandomArrayElement(arrey),
-).join('');
+);
 
 export default class EventsModel {
   events = getRandomArrey(mockEvents);
@@ -24,12 +24,12 @@ export default class EventsModel {
   }
 
   getOffersByType(type) {
-    const allOffers = this.getOffer();
+    const allOffers = this.getOffers();
     return allOffers.find((offer) => offer.type === type);
   }
 
   getOfferById(type, itemsId) {
-    const offersType = this.getOfferByType(type);
+    const offersType = this.getOffersByType(type);
     return offersType.offers.filter((item) => itemsId.find((id) => item.id === id));
   }
 

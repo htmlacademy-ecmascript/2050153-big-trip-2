@@ -57,7 +57,7 @@ function createEventItemTemplate(event, offers, destination) {
 }
 
 export default class EventItemView {
-  constractor({event, offers, destination}) {
+  constructor({event, offers, destination}) {
     this.event = event;
     this.offers = offers;
     this.destination = destination;

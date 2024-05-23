@@ -147,7 +147,7 @@ function createEditPointTemplate(event, offers, checkedOffers, destination) {
 )}
 
 export default class EditPointView {
-  constractor({event, offers, checkedOffers, destination}) {
+  constructor({event, offers, checkedOffers, destination}) {
     this.event = event;
     this.offers = offers;
     this.checkedOffers = checkedOffers;

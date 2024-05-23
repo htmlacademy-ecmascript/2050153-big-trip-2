@@ -1,10 +1,14 @@
 import dayjs from 'dayjs';
 
+const MILLISECONDS_IN_MINUTES = 60000;
+const SECONDS_IN_MINUTS = 60;
+const HOURS_IN_DAY = 24;
+
 const dateFormat = {
-  DATE: 'DD/MM/YYTHH:mm',
-  DATE_AND_TIME: 'YYYY-MM-DDTHH:mm',
-  MONTH_DAY: 'MMMM DD',
-  HOURS: 'THH:mm',
+  DATE: 'DD/MM/YY\xa0HH:mm',
+  DATE_AND_TIME: 'YYYY-MM-DD-HH:mm',
+  MONTH_DAY: 'MMM DD',
+  HOURS: 'HH:mm',
   DATE_POINT: 'YYYY-MM-DD',
 };
 
@@ -29,7 +33,18 @@ const humanizeDate = (eventDate, format) => {
   return eventDate ? dayjs(eventDate).format(format) : '';
 };
 
-const getDifferenceInTime = (date1, date2) => date2.getTime() - date1.getTime();
+const getDifferenceInTime = (start, end) => {
+  const difference = dayjs(end).diff(start) / MILLISECONDS_IN_MINUTES;
+
+  switch (difference) {
+    case difference < SECONDS_IN_MINUTS:
+      return dayjs(difference).format('mm[M]');
+    case difference > SECONDS_IN_MINUTS && difference < (SECONDS_IN_MINUTS * HOURS_IN_DAY):
+      return dayjs(difference).format('HH[H] mm[M]');
+    default:
+      return dayjs(difference).format('DD[D] HH[H] mm[M]');
+  }
+};
 
 const capitalizeWords = (str) => str.replace(/\b\w/g, c => c.toUpperCase());
 
