@@ -1,14 +1,26 @@
 import PagePresenter from './presenter/page-presenter.js';
+import HeaderPresenter from './presenter/header-presenter.js';
+import EventsModel from './model/event-model.js';
+import EventFilterView from './view/filter-view.js';
+import TripInfoView from './view/trip-info-view.js';
 
-// const headerElement = document.querySelector('.page-header__container');
-// const headerTripInfoElement = headerElement.querySelector('.trip-main');
-// const headerFilterElement = headerElement.querySelector('.trip-controls__filters');
+// const pageBodyElement = document.querySelector('.page-body');
 
-const pageBodyElement = document.querySelector('.page-body');
+const headerElement = document.querySelector('.page-header__container');
+const pageMainElement = document.querySelector('.page-main');
+const pageMainSortElement = pageMainElement.querySelector('.trip-events');
 
-const pagePresenter = new PagePresenter({pageContainer: pageBodyElement});
+const eventsModel = new EventsModel();
 
-// render(new TripInfoView(), headerTripInfoElement);
-// render(new EventFilterView(), headerFilterElement);
+const headerPresenter = new HeaderPresenter({
+  headerContainer: headerElement,
+  // eventsModel,
+});
 
+const pagePresenter = new PagePresenter({
+  pageContainer: pageMainElement,
+  eventsModel,
+});
+
+headerPresenter.init();
 pagePresenter.init();
