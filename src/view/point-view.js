@@ -1,4 +1,4 @@
-import { createElement } from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import { dateFormat, humanizeDate, getDifferenceInTime, capitalizeWords } from '../utils.js';
 
 function createOfferTemplate({title, price}) {
@@ -56,26 +56,19 @@ function createEventItemTemplate(event, offers, destination) {
   );
 }
 
-export default class EventItemView {
+export default class EventItemView extends AbstractView {
+  #event = null;
+  #offers = null;
+  #destination = null;
+
   constructor({event, offers, destination}) {
-    this.event = event;
-    this.offers = offers;
-    this.destination = destination;
+    super();
+    this.#event = event;
+    this.#offers = offers;
+    this.#destination = destination;
   }
 
-  getTemplate() {
-    return createEventItemTemplate(this.event, this.offers, this.destination);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
+  get template() {
+    return createEventItemTemplate(this.#event, this.#offers, this.#destination);
   }
 }

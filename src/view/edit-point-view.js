@@ -1,12 +1,12 @@
-import { createElement } from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import { DESTINATIONS, TYPES } from '../const.js';
 import { humanizeDate, capitalizeWords, dateFormat } from '../utils.js';
 
-function createDestinationNameTemplate(name) {
+export function createDestinationNameTemplate(name) {
   return (`<option value=${name}></option>`);
 }
 
-function createTypeTemplate(type) {
+export function createTypeTemplate(type) {
   return (
     `<div class="event__type-item">
       <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value=${type}>
@@ -146,27 +146,21 @@ function createEditPointTemplate(event, offers, checkedOffers, destination) {
   </li>`
 )}
 
-export default class EditPointView {
+export default class EditPointView extends AbstractView {
+  #event = null;
+  #offers = null;
+  #checkedOffers = null;
+  #destination = null;
+
   constructor({event, offers, checkedOffers, destination}) {
-    this.event = event;
-    this.offers = offers;
-    this.checkedOffers = checkedOffers;
-    this.destination = destination;
+    super();
+    this.#event = event;
+    this.#offers = offers;
+    this.#checkedOffers = checkedOffers;
+    this.#destination = destination;
   }
 
-  getTemplate() {
-    return createEditPointTemplate(this.event, this.offers, this.checkedOffers, this.destination);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
+  get template() {
+    return createEditPointTemplate(this.#event, this.#offers, this.#checkedOffers, this.#destination);
   }
 }
