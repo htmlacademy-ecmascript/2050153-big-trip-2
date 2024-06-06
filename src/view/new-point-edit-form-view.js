@@ -1,6 +1,6 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import { DESTINATIONS, TYPES } from '../const.js';
-import { createTypeTemplate, createDestinationNameTemplate } from './edit-point-view.js';
+import { createTypeTemplate, createDestinationNameTemplate } from './form-edit-view.js';
 
 function createPointEditFormTemplate() {
   return (

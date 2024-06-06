@@ -146,21 +146,32 @@ function createEditPointTemplate(event, offers, checkedOffers, destination) {
   </li>`
 )}
 
-export default class EditPointView extends AbstractView {
+export default class FormEditView extends AbstractView {
   #event = null;
   #offers = null;
   #checkedOffers = null;
   #destination = null;
 
-  constructor({event, offers, checkedOffers, destination}) {
+  #handleFormSubmit = null;
+
+  constructor({event, offers, checkedOffers, destination, onFormSubmit}) {
     super();
     this.#event = event;
     this.#offers = offers;
     this.#checkedOffers = checkedOffers;
     this.#destination = destination;
+
+    this.#handleFormSubmit = onFormSubmit;
+    this.element.querySelector('form')
+      .addEventListener('submit', this.#formSubmitHandler);
   }
 
   get template() {
     return createEditPointTemplate(this.#event, this.#offers, this.#checkedOffers, this.#destination);
   }
+
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFormSubmit();
+  };
 }
