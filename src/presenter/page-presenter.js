@@ -7,9 +7,6 @@ import NoEventView from '../view/no-events-view.js';
 import { render, replace, RenderPosition } from '../framework/render.js';
 import { isEscapeKey } from '../utils.js';
 
-const pageMainElement = document.querySelector('.page-main');
-const pageMainSortElement = pageMainElement.querySelector('.trip-events');
-
 export default class PagePresenter {
   #tripListComponent = new EventListView();
   #pageContainer = null;
@@ -71,12 +68,12 @@ export default class PagePresenter {
 
   #renderApp() {
     if (this.#pageEvents.length === 0) {
-      render(new NoEventView(), pageMainSortElement);
+      render(new NoEventView(), this.#pageContainer);
       return;
     }
 
-    render(new EventSortView(), pageMainSortElement);
-    render(this.#tripListComponent, pageMainSortElement);
+    render(new EventSortView(), this.#pageContainer);
+    render(this.#tripListComponent, this.#pageContainer);
 
     this.#pageEvents.forEach((i) => this.#renderEvent(i));
   }

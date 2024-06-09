@@ -14,7 +14,7 @@ const headerPresenter = new HeaderPresenter({
 });
 
 const pagePresenter = new PagePresenter({
-  pageContainer: pageMainElement,
+  pageContainer: pageMainSortElement,
   eventsModel,
 });
 
