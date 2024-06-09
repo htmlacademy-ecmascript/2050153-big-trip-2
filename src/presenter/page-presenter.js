@@ -4,14 +4,15 @@ import EventItemView from '../view/point-view.js';
 import PointEditFormView from '../view/new-point-edit-form-view.js';
 import FormEditView from '../view/form-edit-view.js';
 import { render, replace, RenderPosition } from '../framework/render.js';
+import { isEscapeKey } from '../utils.js';
 
 const pageMainElement = document.querySelector('.page-main');
 const pageMainSortElement = pageMainElement.querySelector('.trip-events');
 
 export default class PagePresenter {
   #tripListComponent = new EventListView();
-  #pageContainer;
-  #eventsModel;
+  #pageContainer = null;
+  #eventsModel = null;
   #pageEvents = [];
 
 
@@ -27,7 +28,7 @@ export default class PagePresenter {
 
   #renderEvent(point) {
     const escKeyDownHandler = (evt) => {
-      if (evt.key === 'Escape') {
+      if (isEscapeKey(evt)) {
         evt.preventDefault();
         replaceFormToPoint();
         document.removeEventListener('keydown', escKeyDownHandler);
@@ -41,6 +42,7 @@ export default class PagePresenter {
       onEditClick: () => {
         replacePointToForm();
         document.addEventListener('keydown', escKeyDownHandler);
+        console.log(escKeyDownHandler);
       }
     });
 
@@ -70,8 +72,6 @@ export default class PagePresenter {
     render(new EventSortView(), pageMainSortElement);
     render(this.#tripListComponent, pageMainSortElement);
 
-    for (let i = 0; i < this.#pageEvents.length; i++) {
-      this.#renderEvent(this.#pageEvents[i]);
-    }
+    this.#pageEvents.forEach((i) => this.#renderEvent(i));
   }
 }

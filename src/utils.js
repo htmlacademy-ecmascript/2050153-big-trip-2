@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { replaceFormToPoint } from './presenter/page-presenter.js';
 
 const MILLISECONDS_IN_MINUTES = 60000;
 const SECONDS_IN_MINUTS = 60;
@@ -48,4 +49,6 @@ const getDifferenceInTime = (start, end) => {
 
 const capitalizeWords = (str) => str.replace(/\b\w/g, c => c.toUpperCase());
 
-export { getRandomArrayElement, getRandomInteger, getArrayFromRandomElements, dateFormat, humanizeDate, getDifferenceInTime, capitalizeWords };
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export { getRandomArrayElement, getRandomInteger, getArrayFromRandomElements, dateFormat, humanizeDate, getDifferenceInTime, capitalizeWords, isEscapeKey };
