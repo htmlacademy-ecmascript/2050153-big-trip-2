@@ -1,10 +1,6 @@
 import PagePresenter from './presenter/page-presenter.js';
 import HeaderPresenter from './presenter/header-presenter.js';
 import EventsModel from './model/event-model.js';
-import EventFilterView from './view/filter-view.js';
-import TripInfoView from './view/trip-info-view.js';
-
-// const pageBodyElement = document.querySelector('.page-body');
 
 const headerElement = document.querySelector('.page-header__container');
 const pageMainElement = document.querySelector('.page-main');
@@ -14,7 +10,7 @@ const eventsModel = new EventsModel();
 
 const headerPresenter = new HeaderPresenter({
   headerContainer: headerElement,
-  // eventsModel,
+  eventsModel,
 });
 
 const pagePresenter = new PagePresenter({

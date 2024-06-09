@@ -3,6 +3,7 @@ import EventListView from '../view/list-view.js';
 import EventItemView from '../view/point-view.js';
 import PointEditFormView from '../view/new-point-edit-form-view.js';
 import FormEditView from '../view/form-edit-view.js';
+import NoEventView from '../view/no-events-view.js';
 import { render, replace, RenderPosition } from '../framework/render.js';
 import { isEscapeKey } from '../utils.js';
 
@@ -69,6 +70,11 @@ export default class PagePresenter {
   }
 
   #renderApp() {
+    if (this.#pageEvents.length === 0) {
+      render(new NoEventView(), pageMainSortElement);
+      return;
+    }
+
     render(new EventSortView(), pageMainSortElement);
     render(this.#tripListComponent, pageMainSortElement);
 

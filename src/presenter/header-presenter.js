@@ -5,7 +5,7 @@ import { RenderPosition, render } from '../framework/render.js';
 export default class HeaderPresenter {
   #tripInfoView = new TripInfoView();
   #eventFilterView = new EventFilterView();
-  #headerContainer;
+  #headerContainer = null;
 
   constructor({headerContainer}) {
     this.headerContainer = headerContainer;
