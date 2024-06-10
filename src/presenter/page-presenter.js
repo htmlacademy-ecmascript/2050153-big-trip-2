@@ -7,6 +7,8 @@ import NoEventView from '../view/no-events-view.js';
 import { render, replace, RenderPosition } from '../framework/render.js';
 import { isEscapeKey } from '../utils.js';
 
+const filterInputs = document.querySelectorAll('.trip-filters__filter-input');
+
 export default class PagePresenter {
   #tripListComponent = new EventListView();
   #pageContainer = null;
