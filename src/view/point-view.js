@@ -16,8 +16,8 @@ function createEventItemTemplate(event, offers, destination) {
   const { name } = destination;
 
   const favouriteClassName = isFavorite
-  ? 'event__favorite-btn--active'
-  : '';
+    ? 'event__favorite-btn--active'
+    : '';
 
   return (
     `<li class="trip-events__item">

@@ -144,7 +144,8 @@ function createEditPointTemplate(event, offers, checkedOffers, destination) {
       </section>
     </form>
   </li>`
-)}
+  )
+};
 
 export default class FormEditView extends AbstractView {
   #event = null;

@@ -29,7 +29,6 @@ export default class HeaderPresenter {
     if (this.#pageEvents.length === 0) {
       const filterInputs = document.querySelectorAll('.trip-filters__filter-input');
       disdableFilters(filterInputs);
-      return;
     }
 
     function disdableFilters(elements) {

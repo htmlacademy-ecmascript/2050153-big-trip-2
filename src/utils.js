@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import { replaceFormToPoint } from './presenter/page-presenter.js';
 
 const MILLISECONDS_IN_MINUTES = 60000;
 const SECONDS_IN_MINUTS = 60;
@@ -30,9 +29,7 @@ const getArrayFromRandomElements = (elements) => Array.from(
 ).join(', ');
 
 // Приобразование данных по дате в нужный формат
-const humanizeDate = (eventDate, format) => {
-  return eventDate ? dayjs(eventDate).format(format) : '';
-};
+const humanizeDate = (eventDate, format) => eventDate ? dayjs(eventDate).format(format) : '';
 
 const getDifferenceInTime = (start, end) => {
   const difference = dayjs(end).diff(start) / MILLISECONDS_IN_MINUTES;
