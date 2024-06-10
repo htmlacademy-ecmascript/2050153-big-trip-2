@@ -1,17 +1,16 @@
 import EventSortView from '../view/sort-view.js';
 import EventListView from '../view/list-view.js';
 import EventItemView from '../view/point-view.js';
-import PointEditFormView from '../view/new-point-edit-form-view.js';
+// import PointEditFormView from '../view/new-point-edit-form-view.js';
 import FormEditView from '../view/form-edit-view.js';
-import { render, replace, RenderPosition } from '../framework/render.js';
-
-const pageMainElement = document.querySelector('.page-main');
-const pageMainSortElement = pageMainElement.querySelector('.trip-events');
+import NoEventView from '../view/no-events-view.js';
+import { render, replace } from '../framework/render.js';
+import { isEscapeKey } from '../utils.js';
 
 export default class PagePresenter {
   #tripListComponent = new EventListView();
-  #pageContainer;
-  #eventsModel;
+  #pageContainer = null;
+  #eventsModel = null;
   #pageEvents = [];
 
 
@@ -27,7 +26,7 @@ export default class PagePresenter {
 
   #renderEvent(point) {
     const escKeyDownHandler = (evt) => {
-      if (evt.key === 'Escape') {
+      if (isEscapeKey(evt)) {
         evt.preventDefault();
         replaceFormToPoint();
         document.removeEventListener('keydown', escKeyDownHandler);
@@ -67,11 +66,14 @@ export default class PagePresenter {
   }
 
   #renderApp() {
-    render(new EventSortView(), pageMainSortElement);
-    render(this.#tripListComponent, pageMainSortElement);
-
-    for (let i = 0; i < this.#pageEvents.length; i++) {
-      this.#renderEvent(this.#pageEvents[i]);
+    if (this.#pageEvents.length === 0) {
+      render(new NoEventView(), this.#pageContainer);
+      return;
     }
+
+    render(new EventSortView(), this.#pageContainer);
+    render(this.#tripListComponent, this.#pageContainer);
+
+    this.#pageEvents.forEach((i) => this.#renderEvent(i));
   }
 }

@@ -3,7 +3,7 @@ import { mockEvents } from '../mock/event-points.js';
 import { mockDestinations } from '../mock/destinations.js';
 import { mockOffers } from '../mock/offers.js';
 
-const EVENT_COUNT = 7;
+const EVENT_COUNT = 0;
 
 const getRandomArrey = (arrey) => Array.from(
   {length: EVENT_COUNT},

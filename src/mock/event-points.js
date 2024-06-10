@@ -1,4 +1,4 @@
-import { getRandomArrayElement, getRandomInteger } from '../utils.js';
+import { getRandomInteger } from '../utils.js';
 
 const mockEvents = [
   {

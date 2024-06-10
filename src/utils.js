@@ -29,9 +29,7 @@ const getArrayFromRandomElements = (elements) => Array.from(
 ).join(', ');
 
 // Приобразование данных по дате в нужный формат
-const humanizeDate = (eventDate, format) => {
-  return eventDate ? dayjs(eventDate).format(format) : '';
-};
+const humanizeDate = (eventDate, format) => eventDate ? dayjs(eventDate).format(format) : '';
 
 const getDifferenceInTime = (start, end) => {
   const difference = dayjs(end).diff(start) / MILLISECONDS_IN_MINUTES;
@@ -48,4 +46,6 @@ const getDifferenceInTime = (start, end) => {
 
 const capitalizeWords = (str) => str.replace(/\b\w/g, c => c.toUpperCase());
 
-export { getRandomArrayElement, getRandomInteger, getArrayFromRandomElements, dateFormat, humanizeDate, getDifferenceInTime, capitalizeWords };
+const isEscapeKey = (evt) => (evt).key === 'Escape';
+
+export { getRandomArrayElement, getRandomInteger, getArrayFromRandomElements, dateFormat, humanizeDate, getDifferenceInTime, capitalizeWords, isEscapeKey };
