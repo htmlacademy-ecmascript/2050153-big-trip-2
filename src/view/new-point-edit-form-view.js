@@ -121,8 +121,8 @@ function createPointEditFormTemplate() {
         </section>
       </form>
     </li>`
-  )
-};
+  );
+}
 
 export default class PointEditFormView extends AbstractView {
   get template() {

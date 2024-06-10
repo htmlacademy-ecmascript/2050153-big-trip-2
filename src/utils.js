@@ -46,6 +46,6 @@ const getDifferenceInTime = (start, end) => {
 
 const capitalizeWords = (str) => str.replace(/\b\w/g, c => c.toUpperCase());
 
-const isEscapeKey = (evt) => evt.key === 'Escape';
+const isEscapeKey = evt => evt.key === 'Escape';
 
 export { getRandomArrayElement, getRandomInteger, getArrayFromRandomElements, dateFormat, humanizeDate, getDifferenceInTime, capitalizeWords, isEscapeKey };
