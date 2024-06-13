@@ -1,8 +1,7 @@
 import EventSortView from '../view/sort-view.js';
 import EventListView from '../view/list-view.js';
-import EventItemView from '../view/point-view.js';
 // import PointEditFormView from '../view/new-point-edit-form-view.js';
-import FormEditView from '../view/form-edit-view.js';
+import PointPresenter from './point-presenter.js';
 import NoEventsView from '../view/no-events-view.js';
 import { render, replace } from '../framework/render.js';
 import { isEscapeKey } from '../utils.js';
@@ -26,45 +25,12 @@ export default class PagePresenter {
     this.#renderApp();
   }
 
-  #renderEvent(point) {
-    const escKeyDownHandler = (evt) => {
-      if (isEscapeKey(evt)) {
-        evt.preventDefault();
-        replaceFormToPoint();
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
-    };
-
-    const event = new EventItemView({
-      event: point,
-      offers: [...this.#eventsModel.getOfferById(point.type, point.offers)],
-      destination: this.#eventsModel.getDestinationById(point.destination),
-      onEditClick: () => {
-        replacePointToForm();
-        document.addEventListener('keydown', escKeyDownHandler);
-      }
+  #renderEvent(event) {
+    const pointPresenter = new PointPresenter({
+      pointListContainer: this.#tripListComponent.element,
+      eventsModel: this.#eventsModel,
     });
-
-    const formEdit = new FormEditView({
-      event: point,
-      checkedOffers: [...this.#eventsModel.getOfferById(point.type, point.offers)],
-      offers: this.#eventsModel.getOffersByType(point.type),
-      destination: this.#eventsModel.getDestinationById(point.destination),
-      onFormSubmit: () => {
-        replaceFormToPoint();
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
-    });
-
-    function replacePointToForm() {
-      replace(formEdit, event);
-    }
-
-    function replaceFormToPoint() {
-      replace(event, formEdit);
-    }
-
-    render(event, this.#tripListComponent.element);
+    pointPresenter.init(event);
   }
 
   #renderNoEvents() {
@@ -87,6 +53,7 @@ export default class PagePresenter {
 
     this.#renderSort();
     this.#renderTripList();
+
     this.#pageEvents.forEach((i) => this.#renderEvent(i));
   }
 }
