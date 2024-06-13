@@ -3,12 +3,14 @@ import EventListView from '../view/list-view.js';
 import EventItemView from '../view/point-view.js';
 // import PointEditFormView from '../view/new-point-edit-form-view.js';
 import FormEditView from '../view/form-edit-view.js';
-import NoEventView from '../view/no-events-view.js';
+import NoEventsView from '../view/no-events-view.js';
 import { render, replace } from '../framework/render.js';
 import { isEscapeKey } from '../utils.js';
 
 export default class PagePresenter {
   #tripListComponent = new EventListView();
+  #sortComponent = new EventSortView();
+  #noEventComponent = new NoEventsView();
   #pageContainer = null;
   #eventsModel = null;
   #pageEvents = [];
@@ -65,15 +67,26 @@ export default class PagePresenter {
     render(event, this.#tripListComponent.element);
   }
 
+  #renderNoEvents() {
+    render(this.#noEventComponent, this.#pageContainer);
+  }
+
+  #renderTripList() {
+    render(this.#tripListComponent, this.#pageContainer);
+  }
+
+  #renderSort() {
+    render(this.#sortComponent, this.#pageContainer);
+  }
+
   #renderApp() {
     if (this.#pageEvents.length === 0) {
-      render(new NoEventView(), this.#pageContainer);
+      this.#renderNoEvents();
       return;
     }
 
-    render(new EventSortView(), this.#pageContainer);
-    render(this.#tripListComponent, this.#pageContainer);
-
+    this.#renderSort();
+    this.#renderTripList();
     this.#pageEvents.forEach((i) => this.#renderEvent(i));
   }
 }

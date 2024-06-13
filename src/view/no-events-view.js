@@ -5,7 +5,7 @@ function createNoEventsTemplate() {
   return `<p class="trip-events__msg">${ TextNoEvent.EVERYTHING }</p>`;
 }
 
-export default class NoEventView extends AbstractView {
+export default class NoEventsView extends AbstractView {
   get template() {
     return createNoEventsTemplate();
   }

@@ -19,8 +19,12 @@ export default class HeaderPresenter {
   init() {
     this.#pageEvents = [...this.#eventsModel.events];
 
-    render(this.#tripInfoView, this.tripInfoContainer, RenderPosition.AFTERBEGIN);
+    this.#renderTripInfo();
     this.#renderFilters();
+  }
+
+  #renderTripInfo() {
+    render(this.#tripInfoView, this.tripInfoContainer, RenderPosition.AFTERBEGIN);
   }
 
   #renderFilters() {
