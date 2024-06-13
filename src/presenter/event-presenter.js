@@ -3,8 +3,8 @@ import FormEditView from '../view/form-edit-view.js';
 import { render, replace } from '../framework/render.js';
 import { isEscapeKey } from '../utils.js';
 
-export default class PointPresenter {
-  #pointListContainer = null;
+export default class EventPresenter {
+  #eventListContainer = null;
 
   #eventComponent = null;
   #formEditComponent = null;
@@ -13,8 +13,8 @@ export default class PointPresenter {
 
   #event = null;
 
-  constructor({pointListContainer, eventsModel}) {
-    this.#pointListContainer = pointListContainer;
+  constructor({eventListContainer, eventsModel}) {
+    this.#eventListContainer = eventListContainer;
     this.#eventsModel = eventsModel;
   }
 
@@ -39,19 +39,19 @@ export default class PointPresenter {
       onFormSubmit: this.#handleFormSubmit,
     });
 
-    // render(this.#eventComponent, this.#pointListContainer);
+    // render(this.#eventComponent, this.#eventListContainer);
     if (prevEventComponent === null || prevFormEditComponent === null) {
-      render(this.#eventComponent, this.#pointListContainer);
+      render(this.#eventComponent, this.#eventListContainer);
       return;
     }
 
     // Проверка на наличие в DOM необходима,
     // чтобы не пытаться заменить то, что не было отрисовано
-    if (this.#pointListContainer.contains(prevEventComponent.element)) {
+    if (this.#eventListContainer.contains(prevEventComponent.element)) {
       replace(this.#eventComponent, prevEventComponent);
     }
 
-    if (this.#pointListContainer.contains(prevFormEditComponent.element)) {
+    if (this.#eventListContainer.contains(prevFormEditComponent.element)) {
       replace(this.#formEditComponent, prevFormEditComponent);
     }
 
