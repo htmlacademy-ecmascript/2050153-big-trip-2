@@ -21,6 +21,9 @@ export default class PointPresenter {
   init(event) {
     this.#event = event;
 
+    const prevEventComponent = this.#eventComponent;
+    const prevFormEditComponent = this.#formEditComponent;
+
     this.#eventComponent = new EventItemView({
       event: this.#event,
       offers: [...this.#eventsModel.getOfferById(event.type, event.offers)],
@@ -36,17 +39,39 @@ export default class PointPresenter {
       onFormSubmit: this.#handleFormSubmit,
     });
 
-    render(this.#eventComponent, this.#pointListContainer);
+    // render(this.#eventComponent, this.#pointListContainer);
+    if (prevEventComponent === null || prevFormEditComponent === null) {
+      render(this.#eventComponent, this.#pointListContainer);
+      return;
+    }
+
+    // Проверка на наличие в DOM необходима,
+    // чтобы не пытаться заменить то, что не было отрисовано
+    if (this.#pointListContainer.contains(prevEventComponent.element)) {
+      replace(this.#eventComponent, prevEventComponent);
+    }
+
+    if (this.#pointListContainer.contains(prevFormEditComponent.element)) {
+      replace(this.#formEditComponent, prevFormEditComponent);
+    }
+
+    remove(prevEventComponent);
+    remove(prevFormEditComponent);
+  }
+
+  destroy() {
+    remove(this.#eventComponent);
+    remove(this.#formEditComponent);
   }
 
   #replacePointToForm() {
     replace(this.#formEditComponent, this.#eventComponent);
-    document.addEventListener('keydown', escKeyDownHandler);
+    document.addEventListener('keydown', this.#escKeyDownHandler);
   }
 
   #replaceFormToPoint() {
     replace(this.#eventComponent, this.#formEditComponent);
-    document.removeEventListener('keydown', escKeyDownHandler)
+    document.removeEventListener('keydown', this.#escKeyDownHandler)
   }
 
   #escKeyDownHandler = (evt) => {

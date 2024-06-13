@@ -29,15 +29,6 @@ function createEventFilterTemplate() {
 }
 
 export default class EventFilterView extends AbstractView {
-  // #filterInputs = null;
-
-  // constructor({filterInputs}) {
-  //   super();
-  //   console.log(filterInputs);
-  //   this.element.querySelectorAll('.trip-filters__filter-input') = filterInputs;
-  //   console.log(filterInputs);
-  // }
-
   get template() {
     return createEventFilterTemplate();
   }
