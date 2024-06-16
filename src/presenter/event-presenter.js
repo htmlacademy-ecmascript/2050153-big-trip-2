@@ -39,7 +39,7 @@ export default class EventPresenter {
       onFavoriteClick: this.#handleFavoriteClick,
     });
 
-    this.#formEditComponent =  new FormEditView({
+    this.#formEditComponent = new FormEditView({
       event: this.#event,
       checkedOffers: [...this.#eventsModel.getOfferById(event.type, event.offers)],
       offers: this.#eventsModel.getOffersByType(event.type),
@@ -81,14 +81,12 @@ export default class EventPresenter {
     document.addEventListener('keydown', this.#escKeyDownHandler);
     this.#handleModeChange();
     this.#mode = Mode.EDITING;
-    console.log(this.#mode);
   }
 
   #replaceFormToEvent() {
     replace(this.#eventComponent, this.#formEditComponent);
     document.removeEventListener('keydown', this.#escKeyDownHandler);
     this.#mode = Mode.DEFAULT;
-    console.log(this.#mode);
   }
 
   #escKeyDownHandler = (evt) => {
