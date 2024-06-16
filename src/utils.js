@@ -48,8 +48,8 @@ const capitalizeWords = (str) => str.replace(/\b\w/g, c => c.toUpperCase());
 
 const isEscapeKey = (evt) => (evt).key === 'Escape';
 
-const updateItem = (items, update) => {
+function updateItem (items, update) {
   return items.map((item) => item.id === update.id ? update : item);
-};
+}
 
 export { getRandomArrayElement, getRandomInteger, getArrayFromRandomElements, dateFormat, humanizeDate, getDifferenceInTime, capitalizeWords, isEscapeKey, updateItem };

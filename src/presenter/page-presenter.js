@@ -38,6 +38,10 @@ export default class PagePresenter {
     render(this.#tripListComponent, this.#pageContainer);
   }
 
+  #handleModeChange = () => {
+    this.#eventPresenters.forEach((presenter) => presenter.resetView());
+  };
+
   #handleEventChange = (updatedEvent) => {
     this.#pageEvents = updateItem(this.#pageEvents, updatedEvent);
     this.#eventPresenters.get(updatedEvent.id).init(updatedEvent);
@@ -51,7 +55,8 @@ export default class PagePresenter {
     const eventPresenter = new EventPresenter({
       eventListContainer: this.#tripListComponent.element,
       eventsModel: this.#eventsModel,
-      onDataChange: this.#handleEventChange
+      onDataChange: this.#handleEventChange,
+      onModeChange: this.#handleModeChange
     });
     eventPresenter.init(event);
     this.#eventPresenters.set(event.id, eventPresenter);
