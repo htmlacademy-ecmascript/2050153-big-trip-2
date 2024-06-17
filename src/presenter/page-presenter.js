@@ -1,17 +1,22 @@
 import EventSortView from '../view/sort-view.js';
 import EventListView from '../view/list-view.js';
-import EventItemView from '../view/point-view.js';
 // import PointEditFormView from '../view/new-point-edit-form-view.js';
-import FormEditView from '../view/form-edit-view.js';
-import NoEventView from '../view/no-events-view.js';
-import { render, replace } from '../framework/render.js';
-import { isEscapeKey } from '../utils.js';
+import NoEventsView from '../view/no-events-view.js';
+import EventPresenter from './event-presenter.js';
+import { render } from '../framework/render.js';
+import { updateItem } from '../utils.js';
 
 export default class PagePresenter {
   #tripListComponent = new EventListView();
+  #sortComponent = new EventSortView();
+  #noEventComponent = new NoEventsView();
+
   #pageContainer = null;
   #eventsModel = null;
+
   #pageEvents = [];
+
+  #eventPresenters = new Map();
 
 
   constructor({pageContainer, eventsModel}) {
@@ -24,55 +29,51 @@ export default class PagePresenter {
     this.#renderApp();
   }
 
-  #renderEvent(point) {
-    const escKeyDownHandler = (evt) => {
-      if (isEscapeKey(evt)) {
-        evt.preventDefault();
-        replaceFormToPoint();
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
-    };
+  #clearTripList() {
+    this.#eventPresenters.forEach((presenter) => presenter.destroy());
+    this.#eventPresenters.clear();
+  }
 
-    const event = new EventItemView({
-      event: point,
-      offers: [...this.#eventsModel.getOfferById(point.type, point.offers)],
-      destination: this.#eventsModel.getDestinationById(point.destination),
-      onEditClick: () => {
-        replacePointToForm();
-        document.addEventListener('keydown', escKeyDownHandler);
-      }
+  #renderTripList() {
+    render(this.#tripListComponent, this.#pageContainer);
+  }
+
+  #handleModeChange = () => {
+    this.#eventPresenters.forEach((presenter) => presenter.resetView());
+  };
+
+  #handleEventChange = (updatedEvent) => {
+    this.#pageEvents = updateItem(this.#pageEvents, updatedEvent);
+    this.#eventPresenters.get(updatedEvent.id).init(updatedEvent);
+  };
+
+  #renderSort() {
+    render(this.#sortComponent, this.#pageContainer);
+  }
+
+  #renderEvent(event) {
+    const eventPresenter = new EventPresenter({
+      eventListContainer: this.#tripListComponent.element,
+      eventsModel: this.#eventsModel,
+      onDataChange: this.#handleEventChange,
+      onModeChange: this.#handleModeChange
     });
+    eventPresenter.init(event);
+    this.#eventPresenters.set(event.id, eventPresenter);
+  }
 
-    const formEdit = new FormEditView({
-      event: point,
-      checkedOffers: [...this.#eventsModel.getOfferById(point.type, point.offers)],
-      offers: this.#eventsModel.getOffersByType(point.type),
-      destination: this.#eventsModel.getDestinationById(point.destination),
-      onFormSubmit: () => {
-        replaceFormToPoint();
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
-    });
-
-    function replacePointToForm() {
-      replace(formEdit, event);
-    }
-
-    function replaceFormToPoint() {
-      replace(event, formEdit);
-    }
-
-    render(event, this.#tripListComponent.element);
+  #renderNoEvents() {
+    render(this.#noEventComponent, this.#pageContainer);
   }
 
   #renderApp() {
     if (this.#pageEvents.length === 0) {
-      render(new NoEventView(), this.#pageContainer);
+      this.#renderNoEvents();
       return;
     }
 
-    render(new EventSortView(), this.#pageContainer);
-    render(this.#tripListComponent, this.#pageContainer);
+    this.#renderSort();
+    this.#renderTripList();
 
     this.#pageEvents.forEach((i) => this.#renderEvent(i));
   }

@@ -50,4 +50,9 @@ const TextNoEvent = {
   FUTURE: 'There are no future events now',
 };
 
-export { DESTINATIONS, DESCRIPTIONS, TYPES, TextNoEvent };
+const Mode = {
+  DEFAULT: 'DEFAULT',
+  EDITING: 'EDITING',
+};
+
+export { DESTINATIONS, DESCRIPTIONS, TYPES, TextNoEvent, Mode };

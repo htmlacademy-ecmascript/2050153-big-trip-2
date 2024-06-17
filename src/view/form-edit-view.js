@@ -153,16 +153,21 @@ export default class FormEditView extends AbstractView {
   #checkedOffers = null;
   #destination = null;
 
+  #handleFormEditClick = null;
   #handleFormSubmit = null;
 
-  constructor({event, offers, checkedOffers, destination, onFormSubmit}) {
+  constructor({event, offers, checkedOffers, destination, onFormEditClick, onFormSubmit}) {
     super();
     this.#event = event;
     this.#offers = offers;
     this.#checkedOffers = checkedOffers;
     this.#destination = destination;
 
+    this.#handleFormEditClick = onFormEditClick;
     this.#handleFormSubmit = onFormSubmit;
+
+    this.element.querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#editClickHandler);
     this.element.querySelector('form')
       .addEventListener('submit', this.#formSubmitHandler);
   }
@@ -173,6 +178,11 @@ export default class FormEditView extends AbstractView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit();
+    this.#handleFormSubmit(this.#event, this.#offers, this.#checkedOffers, this.#destination);
+  };
+
+  #editClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFormEditClick();
   };
 }
