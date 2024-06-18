@@ -8,7 +8,7 @@ import { updateItem } from '../utils.js';
 
 export default class PagePresenter {
   #tripListComponent = new EventListView();
-  #sortComponent = new EventSortView();
+  #sortComponent = null;
   #noEventComponent = new NoEventsView();
 
   #pageContainer = null;
@@ -47,7 +47,17 @@ export default class PagePresenter {
     this.#eventPresenters.get(updatedEvent.id).init(updatedEvent);
   };
 
+  #handleSortTypeChange = (sortType) => {
+    // - Сортируем задачи
+    // - Очищаем список
+    // - Рендерим список заново
+  };
+
   #renderSort() {
+    this.#sortComponent: new EventSortView({
+      onSortTypeChange: this.#handleSortTypeChange
+    });
+
     render(this.#sortComponent, this.#pageContainer);
   }
 
