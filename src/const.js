@@ -55,4 +55,12 @@ const Mode = {
   EDITING: 'EDITING',
 };
 
-export { DESTINATIONS, DESCRIPTIONS, TYPES, TextNoEvent, Mode };
+const SortType = {
+  DAY: 'day',
+  EVENT: 'event',
+  TIME: 'time',
+  PRICE: 'price',
+  OFFER: 'offer',
+};
+
+export { DESTINATIONS, DESCRIPTIONS, TYPES, TextNoEvent, Mode, SortType };
