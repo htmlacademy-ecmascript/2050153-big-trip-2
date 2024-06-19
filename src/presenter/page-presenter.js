@@ -4,7 +4,8 @@ import EventListView from '../view/list-view.js';
 import NoEventsView from '../view/no-events-view.js';
 import EventPresenter from './event-presenter.js';
 import { render } from '../framework/render.js';
-import { updateItem } from '../utils.js';
+import { SortType } from '../const.js';
+import { updateItem, sortByTime, sortByPrice, sortByDay } from '../utils.js';
 
 export default class PagePresenter {
   #tripListComponent = new EventListView();
@@ -14,6 +15,8 @@ export default class PagePresenter {
   #pageContainer = null;
   #eventsModel = null;
 
+  #currentSortType = SortType.DEFAULT;
+  #sortedEvents = [];
   #pageEvents = [];
 
   #eventPresenters = new Map();
@@ -26,6 +29,10 @@ export default class PagePresenter {
 
   init() {
     this.#pageEvents = [...this.#eventsModel.events];
+    // 1. В отличии от сортировки по любому параметру,
+    // исходный порядок можно сохранить только одним способом -
+    // сохранив исходный массив:
+    this.#sortedEvents = [...this.#eventsModel.events];
     this.#renderApp();
   }
 
@@ -44,11 +51,37 @@ export default class PagePresenter {
 
   #handleEventChange = (updatedEvent) => {
     this.#pageEvents = updateItem(this.#pageEvents, updatedEvent);
+    this.#sortedEvents = updateItem(this.#sortedEvents, updatedEvent);
     this.#eventPresenters.get(updatedEvent.id).init(updatedEvent);
   };
 
+  #sortTasks(sortType) {
+    // 2. Этот исходный массив задач необходим,
+    // потому что для сортировки мы будем мутировать
+    // массив в свойстве pageEvents
+    switch (sortType) {
+      case SortType.TIME:
+        this.#pageEvents.sort(sortByTime);
+        break;
+      case SortType.PRICE:
+        this.#pageEvents.sort(sortByPrice);
+        break;
+      default:
+        // 3. А когда пользователь захочет "вернуть всё, как было",
+        // мы просто запишем в pageEvents исходный массив
+        this.#pageEvents = [...this.#sortedEvents];
+    }
+
+    this.#currentSortType = sortType;
+  }
+
   #handleSortTypeChange = (sortType) => {
     // - Сортируем задачи
+    if (this.#currentSortType === sortType) {
+      return;
+    }
+
+    this.#sortTasks(sortType);
     // - Очищаем список
     // - Рендерим список заново
   };

@@ -52,4 +52,35 @@ function updateItem (items, update) {
   return items.map((item) => item.id === update.id ? update : item);
 }
 
-export { getRandomArrayElement, getRandomInteger, getArrayFromRandomElements, dateFormat, humanizeDate, getDifferenceInTime, capitalizeWords, isEscapeKey, updateItem };
+// Сортировка
+const compareEvents = (event1, event2) => {
+  if (event1 < event2) {
+    return -1;
+  }
+  if (event1 > event2) {
+    return 1;
+  }
+  return 0;
+};
+
+const compareNumbers = (a, b) => a - b;
+
+const sortByDay = (eventA, eventB) => {
+  const weight = compareEvents(eventA.dateFrom, eventB.dateFrom);
+
+  return weight ?? dayjs(eventA.dateFrom).diff(dayjs(eventB.dateFrom));
+};
+
+const sortByTime = (eventA, eventB) => {
+  const durationA = getDifferenceInTime(eventA.dateFrom, eventA.dateTo);
+  const durationB = getDifferenceInTime(eventB.dateFrom, eventB.dateTo);
+  const weight = compareEvents(durationA, durationB);
+
+  return weight ?? dayjs(durationA).diff(dayjs(durationB));
+};
+
+const sortByPrice = (eventA, eventB) => {
+  compareNumbers(eventA.price, eventB.price);
+};
+
+export { getRandomArrayElement, getRandomInteger, getArrayFromRandomElements, dateFormat, humanizeDate, getDifferenceInTime, capitalizeWords, isEscapeKey, updateItem, sortByTime, sortByPrice, sortByDay };

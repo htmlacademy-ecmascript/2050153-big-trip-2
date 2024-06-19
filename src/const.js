@@ -56,7 +56,7 @@ const Mode = {
 };
 
 const SortType = {
-  DAY: 'day',
+  DEFAULT: 'day',
   EVENT: 'event',
   TIME: 'time',
   PRICE: 'price',
