@@ -28,11 +28,15 @@ const getArrayFromRandomElements = (elements) => Array.from(
   () => getRandomArrayElement(elements),
 ).join(', ');
 
+const capitalizeWords = (str) => str.replace(/\b\w/g, c => c.toUpperCase());
+
+const isEscapeKey = (evt) => (evt).key === 'Escape';
+
 // Приобразование данных по дате в нужный формат
 const humanizeDate = (eventDate, format) => eventDate ? dayjs(eventDate).format(format) : '';
 
-const getDifferenceInTime = (start, end) => {
-  const difference = dayjs(end).diff(start) / MILLISECONDS_IN_MINUTES;
+function getDifferenceInTime(start, end) {
+  const difference = dayjs(end).diff(dayjs(start))
 
   switch (difference) {
     case difference < SECONDS_IN_MINUTS:
@@ -42,45 +46,30 @@ const getDifferenceInTime = (start, end) => {
     default:
       return dayjs(difference).format('DD[D] HH[H] mm[M]');
   }
-};
-
-const capitalizeWords = (str) => str.replace(/\b\w/g, c => c.toUpperCase());
-
-const isEscapeKey = (evt) => (evt).key === 'Escape';
+}
 
 function updateItem (items, update) {
   return items.map((item) => item.id === update.id ? update : item);
 }
 
-// Сортировка
-const compareEvents = (event1, event2) => {
-  if (event1 < event2) {
-    return -1;
-  }
-  if (event1 > event2) {
-    return 1;
-  }
-  return 0;
-};
+// Сортировкa
+function getDuration(event) {
+  return dayjs(event.dateTo).diff(dayjs(event.dateFrom));
+}
 
-const compareNumbers = (a, b) => a - b;
+function sortByTime(eventA, eventB) {
+  const durationA = getDuration(eventA);
+  const durationB = getDuration(eventB);
 
-const sortByDay = (eventA, eventB) => {
-  const weight = compareEvents(eventA.dateFrom, eventB.dateFrom);
+  return durationB - durationA;
+}
 
-  return weight ?? dayjs(eventA.dateFrom).diff(dayjs(eventB.dateFrom));
-};
+function sortByPrice(eventA, eventB) {
+  return eventA.basePrice - eventB.basePrice;
+}
 
-const sortByTime = (eventA, eventB) => {
-  const durationA = getDifferenceInTime(eventA.dateFrom, eventA.dateTo);
-  const durationB = getDifferenceInTime(eventB.dateFrom, eventB.dateTo);
-  const weight = compareEvents(durationA, durationB);
+// function getSortTypeChecked(sortType) {
+//   return sortType.setAttribute('checked');
+// }
 
-  return weight ?? dayjs(durationA).diff(dayjs(durationB));
-};
-
-const sortByPrice = (eventA, eventB) => {
-  compareNumbers(eventA.price, eventB.price);
-};
-
-export { getRandomArrayElement, getRandomInteger, getArrayFromRandomElements, dateFormat, humanizeDate, getDifferenceInTime, capitalizeWords, isEscapeKey, updateItem, sortByTime, sortByPrice, sortByDay };
+export { getRandomArrayElement, getRandomInteger, getArrayFromRandomElements, dateFormat, humanizeDate, getDifferenceInTime, capitalizeWords, isEscapeKey, updateItem, sortByTime, sortByPrice };

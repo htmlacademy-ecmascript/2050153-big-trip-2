@@ -7,7 +7,7 @@ const mockEvents = [
     type: 'flight',
     destination: 'bfa5cb75-a1fe-4b77-a83c-0e528e910e01',
     dateFrom: new Date ('2019-03-19 22:55:56.845Z'),
-    dateTo: new Date ('2019-03-19 11:22:13.375Z'),
+    dateTo: new Date ('2019-03-22 11:22:13.375Z'),
     isFavorite: false,
     offers: [
       'b4c3e4e6-9053-42ce-b747-e281314baa40',

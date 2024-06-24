@@ -5,7 +5,7 @@ import NoEventsView from '../view/no-events-view.js';
 import EventPresenter from './event-presenter.js';
 import { render } from '../framework/render.js';
 import { SortType } from '../const.js';
-import { updateItem, sortByTime, sortByPrice, sortByDay } from '../utils.js';
+import { updateItem, sortByTime, sortByPrice } from '../utils.js';
 
 export default class PagePresenter {
   #tripListComponent = new EventListView();
@@ -18,13 +18,16 @@ export default class PagePresenter {
   #currentSortType = SortType.DEFAULT;
   #sortedEvents = [];
   #pageEvents = [];
+  #sortTypes = [];
 
   #eventPresenters = new Map();
 
 
-  constructor({pageContainer, eventsModel}) {
+  constructor({pageContainer, eventsModel, sorts}) {
     this.#pageContainer = pageContainer;
     this.#eventsModel = eventsModel;
+    this.#sortTypes = sorts;
+    // this.#handleSortTypeChange =  onSortTypeChange;
   }
 
   init() {
@@ -33,16 +36,7 @@ export default class PagePresenter {
     // исходный порядок можно сохранить только одним способом -
     // сохранив исходный массив:
     this.#sortedEvents = [...this.#eventsModel.events];
-    this.#renderApp();
-  }
-
-  #clearTripList() {
-    this.#eventPresenters.forEach((presenter) => presenter.destroy());
-    this.#eventPresenters.clear();
-  }
-
-  #renderTripList() {
-    render(this.#tripListComponent, this.#pageContainer);
+    this.#renderEvents();
   }
 
   #handleModeChange = () => {
@@ -55,7 +49,22 @@ export default class PagePresenter {
     this.#eventPresenters.get(updatedEvent.id).init(updatedEvent);
   };
 
-  #sortTasks(sortType) {
+  #handleSortTypeChange = (sortType) => {
+    // - Сортируем задачи
+    if (this.#currentSortType === sortType) {
+      return;
+    }
+
+    this.#sortEvents(sortType);
+    // - Очищаем список
+    this.#clearTripList();
+    // - Рендерим список заново
+    this.#renderTripList();
+  };
+
+  #sortEvents(sortType) {
+    console.log('sortType', sortType);
+    console.log('1', this.#pageEvents);
     // 2. Этот исходный массив задач необходим,
     // потому что для сортировки мы будем мутировать
     // массив в свойстве pageEvents
@@ -71,24 +80,15 @@ export default class PagePresenter {
         // мы просто запишем в pageEvents исходный массив
         this.#pageEvents = [...this.#sortedEvents];
     }
+    console.log( '2', this.#pageEvents);
 
     this.#currentSortType = sortType;
   }
 
-  #handleSortTypeChange = (sortType) => {
-    // - Сортируем задачи
-    if (this.#currentSortType === sortType) {
-      return;
-    }
-
-    this.#sortTasks(sortType);
-    // - Очищаем список
-    // - Рендерим список заново
-  };
-
   #renderSort() {
-    this.#sortComponent: new EventSortView({
-      onSortTypeChange: this.#handleSortTypeChange
+    this.#sortComponent = new EventSortView({
+      sorts: this.#sortTypes,
+      onSortTypeChange: this.#handleSortTypeChange,
     });
 
     render(this.#sortComponent, this.#pageContainer);
@@ -109,7 +109,17 @@ export default class PagePresenter {
     render(this.#noEventComponent, this.#pageContainer);
   }
 
-  #renderApp() {
+  #clearTripList() {
+    this.#eventPresenters.forEach((presenter) => presenter.destroy());
+    this.#eventPresenters.clear();
+  }
+
+  #renderTripList() {
+    render(this.#tripListComponent, this.#pageContainer);
+    this.#pageEvents.forEach((i) => this.#renderEvent(i));
+  }
+
+  #renderEvents() {
     if (this.#pageEvents.length === 0) {
       this.#renderNoEvents();
       return;
@@ -117,7 +127,5 @@ export default class PagePresenter {
 
     this.#renderSort();
     this.#renderTripList();
-
-    this.#pageEvents.forEach((i) => this.#renderEvent(i));
   }
 }
