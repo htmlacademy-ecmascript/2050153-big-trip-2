@@ -9,6 +9,7 @@ const getRandomArrey = (arrey) => Array.from(
   {length: EVENT_COUNT},
   () => getRandomArrayElement(arrey));
 
+
 export default class EventsModel {
   #events = getRandomArrey(mockEvents);
   #offers = mockOffers;

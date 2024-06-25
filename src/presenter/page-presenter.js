@@ -3,7 +3,7 @@ import EventListView from '../view/list-view.js';
 // import PointEditFormView from '../view/new-point-edit-form-view.js';
 import NoEventsView from '../view/no-events-view.js';
 import EventPresenter from './event-presenter.js';
-import { render } from '../framework/render.js';
+import { render, remove, RenderPosition } from '../framework/render.js';
 import { SortType } from '../const.js';
 import { updateItem, sortByTime, sortByPrice } from '../utils.js';
 
@@ -22,12 +22,10 @@ export default class PagePresenter {
 
   #eventPresenters = new Map();
 
-
   constructor({pageContainer, eventsModel, sorts}) {
     this.#pageContainer = pageContainer;
     this.#eventsModel = eventsModel;
     this.#sortTypes = sorts;
-    // this.#handleSortTypeChange =  onSortTypeChange;
   }
 
   init() {
@@ -56,15 +54,15 @@ export default class PagePresenter {
     }
 
     this.#sortEvents(sortType);
+    this.#clearSortTypes();
+    this.#renderSort();
     // - Очищаем список
     this.#clearTripList();
     // - Рендерим список заново
-    this.#renderTripList();
+    this.#pageEvents.forEach((i) => this.#renderEvent(i));
   };
 
   #sortEvents(sortType) {
-    console.log('sortType', sortType);
-    console.log('1', this.#pageEvents);
     // 2. Этот исходный массив задач необходим,
     // потому что для сортировки мы будем мутировать
     // массив в свойстве pageEvents
@@ -80,9 +78,9 @@ export default class PagePresenter {
         // мы просто запишем в pageEvents исходный массив
         this.#pageEvents = [...this.#sortedEvents];
     }
-    console.log( '2', this.#pageEvents);
 
     this.#currentSortType = sortType;
+    this.#sortTypes.forEach((i) => (i.type === sortType) ? (i.isChecked = true) : (i.isChecked = false));
   }
 
   #renderSort() {
@@ -91,7 +89,7 @@ export default class PagePresenter {
       onSortTypeChange: this.#handleSortTypeChange,
     });
 
-    render(this.#sortComponent, this.#pageContainer);
+    render(this.#sortComponent, this.#pageContainer, RenderPosition.AFTERBEGIN);
   }
 
   #renderEvent(event) {
@@ -114,9 +112,12 @@ export default class PagePresenter {
     this.#eventPresenters.clear();
   }
 
+  #clearSortTypes() {
+    remove(this.#sortComponent);
+  }
+
   #renderTripList() {
     render(this.#tripListComponent, this.#pageContainer);
-    this.#pageEvents.forEach((i) => this.#renderEvent(i));
   }
 
   #renderEvents() {
@@ -127,5 +128,7 @@ export default class PagePresenter {
 
     this.#renderSort();
     this.#renderTripList();
+
+    this.#pageEvents.forEach((i) => this.#renderEvent(i));
   }
 }

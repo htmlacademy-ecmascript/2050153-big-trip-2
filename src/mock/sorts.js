@@ -9,7 +9,6 @@ const sortByTypes = {
 }
 
 function generateSortTypes() {
-  console.log(Object.entries(sortByTypes));
   return Object.entries(sortByTypes).map(
     ([sortType, {isDisabled, isChecked }]) => ({
     type: sortType,

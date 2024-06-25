@@ -68,8 +68,4 @@ function sortByPrice(eventA, eventB) {
   return eventA.basePrice - eventB.basePrice;
 }
 
-// function getSortTypeChecked(sortType) {
-//   return sortType.setAttribute('checked');
-// }
-
 export { getRandomArrayElement, getRandomInteger, getArrayFromRandomElements, dateFormat, humanizeDate, getDifferenceInTime, capitalizeWords, isEscapeKey, updateItem, sortByTime, sortByPrice };

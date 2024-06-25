@@ -11,7 +11,6 @@ export function createSortTemplate(sort) {
     ? 'checked'
     : '';
 
-  console.log('type',type);
   return (
     `<div class="trip-sort__item  trip-sort__item--${type}">
       <input id="sort-${type}" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" data-sort-type="${type}" value="sort-${type}" ${checkedAttribute} ${disabledAttribute}>
@@ -21,7 +20,6 @@ export function createSortTemplate(sort) {
 }
 
 function createSortContainerTemplate(sorts) {
-  console.log('sorts', sorts);
   return (
     `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
       ${sorts.map((sort) => createSortTemplate(sort)).join('')}
@@ -36,7 +34,6 @@ export default class EventSortView extends AbstractView {
   constructor({sorts, onSortTypeChange}) {
     super();
     this.#sorts = sorts;
-    console.log('sorts', this.#sorts);
     this.#handleSortTypeChange = onSortTypeChange;
 
     this.element.addEventListener('click', this.#sortTypeChangeHandler);
@@ -53,10 +50,5 @@ export default class EventSortView extends AbstractView {
 
     evt.preventDefault();
     this.#handleSortTypeChange(evt.target.dataset.sortType);
-    if (evt.target.dataset.sortType) {
-      if (evt.target !== 'checked') {
-        evt.target.setAttribute('checked', '')
-      }
-    }
   };
 }
