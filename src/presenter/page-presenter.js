@@ -60,20 +60,16 @@ export default class PagePresenter {
     // - Рендерим сортировку заново
     this.#renderSort();
     // - Очищаем список
-    this.#clearTripList();
+    this.#clearEvents();
     // - Рендерим список заново
     this.#pageEvents.forEach((i) => this.#renderEvent(i));
   };
 
   #sortEvents(sortType) {
-    // this.#pageEvents.sort(sortByDay);
     // 2. Этот исходный массив задач необходим,
     // потому что для сортировки мы будем мутировать
     // массив в свойстве pageEvents
     switch (sortType) {
-      // case SortType.DEFAULT:
-      //   this.#pageEvents.sort(sortByDay);
-      //   break;
       case SortType.TIME:
         this.#pageEvents.sort(sortByTime);
         break;
@@ -81,8 +77,8 @@ export default class PagePresenter {
         this.#pageEvents.sort(sortByPrice);
         break;
       default:
-      //   // 3. А когда пользователь захочет "вернуть всё, как было",
-      //   // мы просто запишем в pageEvents исходный массив
+      // 3. А когда пользователь захочет "вернуть всё, как было",
+      // мы просто запишем в pageEvents исходный массив
         this.#pageEvents = [...this.#sortedEvents];
         this.#pageEvents.sort(sortByDay);
         this.#currentSortType = SortType.DEFAULT;
@@ -116,7 +112,7 @@ export default class PagePresenter {
     render(this.#noEventComponent, this.#pageContainer);
   }
 
-  #clearTripList() {
+  #clearEvents() {
     this.#eventPresenters.forEach((presenter) => presenter.destroy());
     this.#eventPresenters.clear();
   }

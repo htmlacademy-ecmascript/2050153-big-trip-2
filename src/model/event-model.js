@@ -1,17 +1,12 @@
 import { getRandomArrayElement } from '../utils/utils.js';
-import { mockEvents } from '../mock/event-points.js';
+import { getRandomEvent } from '../mock/event-points.js';
 import { mockDestinations } from '../mock/destinations.js';
 import { mockOffers } from '../mock/offers.js';
 
 const EVENT_COUNT = 3;
 
-const getRandomArrey = (arrey) => Array.from(
-  {length: EVENT_COUNT},
-  () => getRandomArrayElement(arrey));
-
-
 export default class EventsModel {
-  #events = getRandomArrey(mockEvents);
+  #events = Array.from({length: EVENT_COUNT},() => getRandomEvent());
   #offers = mockOffers;
   #destinations = mockDestinations;
 

@@ -1,8 +1,8 @@
-import { getRandomInteger } from '../utils/utils.js';
+import { getRandomInteger, getRandomArrayElement } from '../utils/utils.js';
+import { nanoid } from 'nanoid';
 
 const mockEvents = [
   {
-    id: 'f4b62099-293f-4c3d-a702-94eec4a2808a',
     basePrice: getRandomInteger(10, 100000),
     type: 'flight',
     destination: 'bfa5cb75-a1fe-4b77-a83c-0e528e910e01',
@@ -19,7 +19,6 @@ const mockEvents = [
     ],
   },
   {
-    id: 'f4b62099-293f-4c3d-a702-94eec4a2808b',
     basePrice: getRandomInteger(10, 100000),
     type: 'taxi',
     destination: 'bfa5cb75-a1fe-4b77-a83c-0e528e910e02',
@@ -32,7 +31,6 @@ const mockEvents = [
     ],
   },
   {
-    id: 'f4b62099-293f-4c3d-a702-94eec4a2808c',
     basePrice: getRandomInteger(10, 100000),
     type: 'flight',
     destination: 'bfa5cb75-a1fe-4b77-a83c-0e528e910e03',
@@ -45,7 +43,6 @@ const mockEvents = [
     ],
   },
   {
-    id: 'f4b62099-293f-4c3d-a702-94eec4a2808d',
     basePrice: getRandomInteger(10, 100000),
     type: 'drive',
     destination: 'bfa5cb75-a1fe-4b77-a83c-0e528e910e04',
@@ -57,7 +54,6 @@ const mockEvents = [
     ],
   },
   {
-    id: 'f4b62099-293f-4c3d-a702-94eec4a2808e',
     basePrice: getRandomInteger(10, 100000),
     type: 'check-in',
     destination: 'bfa5cb75-a1fe-4b77-a83c-0e528e910e05',
@@ -68,4 +64,11 @@ const mockEvents = [
   },
 ];
 
-export { mockEvents };
+function getRandomEvent() {
+  return {
+    id: nanoid(),
+    ...getRandomArrayElement(mockEvents)
+  };
+}
+
+export { getRandomEvent };
