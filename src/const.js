@@ -36,12 +36,12 @@ const TYPES = [
   'restaurant'
 ];
 
-// const Filters = {
-//   EVERYTHING: 'everything',
-//   PAST: 'past',
-//   PRESENT: 'present',
-//   FUTURE: 'future',
-// }
+const Filters = {
+  EVERYTHING: 'everything',
+  PAST: 'past',
+  PRESENT: 'present',
+  FUTURE: 'future',
+}
 
 const TextNoEvent = {
   EVERYTHING: 'Click New Event to create your first point',
@@ -63,4 +63,4 @@ const SortType = {
   OFFERS: 'offers',
 };
 
-export { DESTINATIONS, DESCRIPTIONS, TYPES, TextNoEvent, Mode, SortType };
+export { DESTINATIONS, DESCRIPTIONS, TYPES, TextNoEvent, Mode, SortType, Filters };

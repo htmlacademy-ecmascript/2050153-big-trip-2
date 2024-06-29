@@ -5,7 +5,8 @@ import NoEventsView from '../view/no-events-view.js';
 import EventPresenter from './event-presenter.js';
 import { render, remove, RenderPosition } from '../framework/render.js';
 import { SortType } from '../const.js';
-import { updateItem, sortByTime, sortByPrice } from '../utils.js';
+import { updateItem } from '../utils/utils.js';
+import { sortByDay, sortByTime, sortByPrice } from '../utils/sort.js';
 
 export default class PagePresenter {
   #tripListComponent = new EventListView();
@@ -54,7 +55,9 @@ export default class PagePresenter {
     }
 
     this.#sortEvents(sortType);
+    // - Очищаем сортировку
     this.#clearSortTypes();
+    // - Рендерим сортировку заново
     this.#renderSort();
     // - Очищаем список
     this.#clearTripList();
@@ -63,10 +66,14 @@ export default class PagePresenter {
   };
 
   #sortEvents(sortType) {
+    // this.#pageEvents.sort(sortByDay);
     // 2. Этот исходный массив задач необходим,
     // потому что для сортировки мы будем мутировать
     // массив в свойстве pageEvents
     switch (sortType) {
+      // case SortType.DEFAULT:
+      //   this.#pageEvents.sort(sortByDay);
+      //   break;
       case SortType.TIME:
         this.#pageEvents.sort(sortByTime);
         break;
@@ -74,9 +81,11 @@ export default class PagePresenter {
         this.#pageEvents.sort(sortByPrice);
         break;
       default:
-        // 3. А когда пользователь захочет "вернуть всё, как было",
-        // мы просто запишем в pageEvents исходный массив
+      //   // 3. А когда пользователь захочет "вернуть всё, как было",
+      //   // мы просто запишем в pageEvents исходный массив
         this.#pageEvents = [...this.#sortedEvents];
+        this.#pageEvents.sort(sortByDay);
+        this.#currentSortType = SortType.DEFAULT;
     }
 
     this.#currentSortType = sortType;
@@ -129,6 +138,7 @@ export default class PagePresenter {
     this.#renderSort();
     this.#renderTripList();
 
+    this.#pageEvents.sort(sortByDay);
     this.#pageEvents.forEach((i) => this.#renderEvent(i));
   }
 }

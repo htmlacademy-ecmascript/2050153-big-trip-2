@@ -52,20 +52,4 @@ function updateItem (items, update) {
   return items.map((item) => item.id === update.id ? update : item);
 }
 
-// Сортировкa
-function getDuration(event) {
-  return dayjs(event.dateTo).diff(dayjs(event.dateFrom));
-}
-
-function sortByTime(eventA, eventB) {
-  const durationA = getDuration(eventA);
-  const durationB = getDuration(eventB);
-
-  return durationB - durationA;
-}
-
-function sortByPrice(eventA, eventB) {
-  return eventA.basePrice - eventB.basePrice;
-}
-
-export { getRandomArrayElement, getRandomInteger, getArrayFromRandomElements, dateFormat, humanizeDate, getDifferenceInTime, capitalizeWords, isEscapeKey, updateItem, sortByTime, sortByPrice };
+export { getRandomArrayElement, getRandomInteger, getArrayFromRandomElements, dateFormat, humanizeDate, getDifferenceInTime, capitalizeWords, isEscapeKey, updateItem };

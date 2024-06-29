@@ -1,7 +1,7 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { capitalizeWords } from '../utils.js';
+import { capitalizeWords } from '../utils/utils.js';
 
-export function createSortTemplate(sort) {
+function createSortTemplate(sort) {
   const { type, isDisabled, isChecked } = sort;
   const disabledAttribute = isDisabled
     ? 'disabled'
