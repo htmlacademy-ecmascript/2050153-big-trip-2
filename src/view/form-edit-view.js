@@ -1,6 +1,6 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import { DESTINATIONS, TYPES } from '../const.js';
-import { humanizeDate, capitalizeWords, dateFormat } from '../utils.js';
+import { humanizeDate, capitalizeWords, dateFormat } from '../utils/utils.js';
 
 export function createDestinationNameTemplate(name) {
   return (`<option value=${name}></option>`);

@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { dateFormat, humanizeDate, getDifferenceInTime, capitalizeWords } from '../utils.js';
+import { dateFormat, humanizeDate, getDifferenceInTime, capitalizeWords } from '../utils/utils.js';
 
 function createOfferTemplate({title, price}) {
   return (

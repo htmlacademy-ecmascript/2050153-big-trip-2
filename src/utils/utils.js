@@ -28,11 +28,15 @@ const getArrayFromRandomElements = (elements) => Array.from(
   () => getRandomArrayElement(elements),
 ).join(', ');
 
+const capitalizeWords = (str) => str.replace(/\b\w/g, c => c.toUpperCase());
+
+const isEscapeKey = (evt) => (evt).key === 'Escape';
+
 // Приобразование данных по дате в нужный формат
 const humanizeDate = (eventDate, format) => eventDate ? dayjs(eventDate).format(format) : '';
 
-const getDifferenceInTime = (start, end) => {
-  const difference = dayjs(end).diff(start) / MILLISECONDS_IN_MINUTES;
+function getDifferenceInTime(start, end) {
+  const difference = dayjs(end).diff(dayjs(start))
 
   switch (difference) {
     case difference < SECONDS_IN_MINUTS:
@@ -42,11 +46,7 @@ const getDifferenceInTime = (start, end) => {
     default:
       return dayjs(difference).format('DD[D] HH[H] mm[M]');
   }
-};
-
-const capitalizeWords = (str) => str.replace(/\b\w/g, c => c.toUpperCase());
-
-const isEscapeKey = (evt) => (evt).key === 'Escape';
+}
 
 function updateItem (items, update) {
   return items.map((item) => item.id === update.id ? update : item);
