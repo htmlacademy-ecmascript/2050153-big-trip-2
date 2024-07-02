@@ -8,11 +8,11 @@ const mockDestinations = [
     name: getRandomArrayElement(DESTINATIONS),
     pictures: [
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
     ],
@@ -29,15 +29,15 @@ const mockDestinations = [
     name: getRandomArrayElement(DESTINATIONS),
     pictures: [
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
     ],
@@ -48,7 +48,7 @@ const mockDestinations = [
     name: getRandomArrayElement(DESTINATIONS),
     pictures: [
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       }
     ],
@@ -59,19 +59,19 @@ const mockDestinations = [
     name: getRandomArrayElement(DESTINATIONS),
     pictures: [
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
     ],
@@ -82,11 +82,11 @@ const mockDestinations = [
     name: getRandomArrayElement(DESTINATIONS),
     pictures: [
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
     ],
@@ -97,22 +97,22 @@ const mockDestinations = [
     name: getRandomArrayElement(DESTINATIONS),
     pictures: [
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },{
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
     ],
@@ -123,7 +123,7 @@ const mockDestinations = [
     name: getRandomArrayElement(DESTINATIONS),
     pictures: [
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
     ],

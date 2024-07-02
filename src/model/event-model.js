@@ -28,12 +28,12 @@ export default class EventsModel {
     return offersType.offers.filter((item) => itemsId.find((id) => item.id === id));
   }
 
-  get destination() {
+  get destinations() {
     return this.#destinations;
   }
 
   getDestinationById(id) {
-    const allDestinations = this.destination;
+    const allDestinations = this.destinations;
     return allDestinations.find((item) => item.id === id);
   }
 }

@@ -1,8 +1,9 @@
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { DESTINATIONS, TYPES } from '../const.js';
 import { humanizeDate, capitalizeWords, dateFormat } from '../utils/utils.js';
 
 export function createDestinationNameTemplate(name) {
+  console.log(name);
   return (`<option value=${name}></option>`);
 }
 
@@ -81,10 +82,9 @@ function createDestinationTemplate(destination) {
   return '';
 }
 
-function createEditPointTemplate(event, offers, checkedOffers, destination) {
-  const { id, type, dateFrom, dateTo, basePrice } = event;
-  const { name } = destination;
-
+function createEditPointTemplate(event) {
+  const { id, type, dateFrom, dateTo, basePrice } = event.event;
+  const { name } = event.destination;
 
   return (
     `<li class="trip-events__item">
@@ -139,16 +139,15 @@ function createEditPointTemplate(event, offers, checkedOffers, destination) {
         </button>
       </header>
       <section class="event__details">
-        ${createOfferContainerTemplate(offers, checkedOffers)}
-        ${createDestinationTemplate(destination)}
+        ${createOfferContainerTemplate(event.offers, event.checkedOffers)}
+        ${createDestinationTemplate(event.destination)}
       </section>
     </form>
   </li>`
   );
 }
 
-export default class FormEditView extends AbstractView {
-  #event = null;
+export default class FormEditView extends AbstractStatefulView {
   #offers = null;
   #checkedOffers = null;
   #destination = null;
@@ -158,7 +157,6 @@ export default class FormEditView extends AbstractView {
 
   constructor({event, offers, checkedOffers, destination, onFormEditClick, onFormSubmit}) {
     super();
-    this.#event = event;
     this.#offers = offers;
     this.#checkedOffers = checkedOffers;
     this.#destination = destination;
@@ -166,23 +164,80 @@ export default class FormEditView extends AbstractView {
     this.#handleFormEditClick = onFormEditClick;
     this.#handleFormSubmit = onFormSubmit;
 
+    this._setState(FormEditView.parseEventToState({event: event}));
+
     this.element.querySelector('.event__rollup-btn')
       .addEventListener('click', this.#editClickHandler);
     this.element.querySelector('form')
       .addEventListener('submit', this.#formSubmitHandler);
+    this.element.querySelector('.event__type-group')
+      .addEventListener('change', this.#typeChangeHandler);
+    this.element.querySelector('.event__input--destination')
+      .addEventListener('change', this.#destinationChangeHandler);
+    this.element.querySelector('.event__available-offers')
+      .addEventListener('change', this.#offersChangeHandler);
+    this.element.querySelector('.event__input--price')
+      .addEventListener('change', this.#priceChangeHandler);
   }
 
   get template() {
-    return createEditPointTemplate(this.#event, this.#offers, this.#checkedOffers, this.#destination);
+    return createEditPointTemplate({
+      offers: this.#offers,
+      checkedOffers: this.#checkedOffers,
+      destination: this.#destination,
+      event: this._state.event,
+    });
   }
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(this.#event, this.#offers, this.#checkedOffers, this.#destination);
+    this.#handleFormSubmit(FormEditView.parseStateToEvent(this._state));
   };
 
   #editClickHandler = (evt) => {
     evt.preventDefault();
     this.#handleFormEditClick();
   };
+
+  #typeChangeHandler = (evt) => {
+    this.updateElement({
+      event: {...this._state.event,
+        type: evt.target.value,
+        offers: [],
+      }
+    })
+  };
+
+  #destinationChangeHandler = (evt) => {
+    const selectedDestination = DESTINATIONS.find((destination) => destination);
+    console.log(selectedDestination);
+    const selectedDestinationId = (selectedDestination) ? selectedDestination.id : null;
+    this.updateElement({
+      event: {...this._state.event,
+        description: selectedDestinationId,
+      }
+    })
+  };
+
+  #offersChangeHandler = (evt) => {
+    const checkedBoxes = Arrey.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
+    this._setState({
+      event: {...this._state.event,
+        checkedOffers: checkedBoxes,
+      }
+    })
+  };
+
+  #priceChangeHandler= (evt) => {
+    this._setState({
+      event: {...this._state.event,
+        // basePrice: ...this._state.event.basePrice + evt.target.valueAsNumber,
+        basePrice: evt.target.valueAsNumber,
+      }
+    })
+  };
+
+  static parseEventToState = ({event}) => ({event});
+
+  static parseStateToEvent = (state) => state.event;
 }
