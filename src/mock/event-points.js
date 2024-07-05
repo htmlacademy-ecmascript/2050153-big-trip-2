@@ -12,10 +12,7 @@ const mockEvents = [
     offers: [
       'b4c3e4e6-9053-42ce-b747-e281314baa40',
       'b4c3e4e6-9053-42ce-b747-e281314baa36',
-      'b4c3e4e6-9053-42ce-b747-e281314baa31',
-      'b4c3e4e6-9053-42ce-b747-e281314baa32',
       'b4c3e4e6-9053-42ce-b747-e281314baa33',
-      'b4c3e4e6-9053-42ce-b747-e281314baa38'
     ],
   },
   {
@@ -26,7 +23,6 @@ const mockEvents = [
     dateTo: new Date ('2019-07-11 11:22:13.375Z'),
     isFavorite: true,
     offers: [
-      'b4c3e4e6-9053-42ce-b747-e281314baa32',
       'b4c3e4e6-9053-42ce-b747-e281314baa37'
     ],
   },

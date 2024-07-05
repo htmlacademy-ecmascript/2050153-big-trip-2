@@ -44,6 +44,7 @@ export default class EventPresenter {
       checkedOffers: [...this.#eventsModel.getOfferById(event.type, event.offers)],
       offers: this.#eventsModel.getOffersByType(event.type),
       destination: this.#eventsModel.getDestinationById(event.destination),
+      destinations: [...this.#eventsModel.destinations],
       onFormEditClick: this.#handleFormEditClick,
       onFormSubmit: this.#handleFormSubmit,
     });
@@ -92,6 +93,7 @@ export default class EventPresenter {
   #escKeyDownHandler = (evt) => {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
+      this.#formEditComponent.reset(this.#event);
       this.#replaceFormToEvent();
     }
   };
@@ -105,6 +107,7 @@ export default class EventPresenter {
   };
 
   #handleFormEditClick = () => {
+    this.#formEditComponent.reset(this.#event);
     this.#replaceFormToEvent();
   };
 

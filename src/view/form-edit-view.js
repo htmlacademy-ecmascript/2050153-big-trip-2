@@ -3,7 +3,6 @@ import { DESTINATIONS, TYPES } from '../const.js';
 import { humanizeDate, capitalizeWords, dateFormat } from '../utils/utils.js';
 
 export function createDestinationNameTemplate(name) {
-  console.log(name);
   return (`<option value=${name}></option>`);
 }
 
@@ -32,14 +31,14 @@ function createOfferTemplate(offer, checkedOffers) {
   );
 }
 
-function createOfferContainerTemplate({offers}, checkedOffers) {
+function createOfferContainerTemplate(offers, checkedOffers) {
   if (offers.length !== 0) {
     return (
       `<section class="event__section  event__section--offers">
         <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
         <div class="event__available-offers">
-          ${offers.map((offer) => createOfferTemplate(offer, checkedOffers)).join('')}
+          ${offers.offers.map((offer) => createOfferTemplate(offer, checkedOffers)).join('')}
         </div>
       </section>`
     );
@@ -82,9 +81,9 @@ function createDestinationTemplate(destination) {
   return '';
 }
 
-function createEditPointTemplate(event) {
-  const { id, type, dateFrom, dateTo, basePrice } = event.event;
-  const { name } = event.destination;
+function createEditPointTemplate({offers, checkedOffers, destination, state}) {
+  const { event: {id, type, dateFrom, dateTo, basePrice }} = state;
+  const { name } = destination;
 
   return (
     `<li class="trip-events__item">
@@ -139,8 +138,8 @@ function createEditPointTemplate(event) {
         </button>
       </header>
       <section class="event__details">
-        ${createOfferContainerTemplate(event.offers, event.checkedOffers)}
-        ${createDestinationTemplate(event.destination)}
+        ${createOfferContainerTemplate(offers, checkedOffers)}
+        ${createDestinationTemplate(destination)}
       </section>
     </form>
   </li>`
@@ -150,22 +149,43 @@ function createEditPointTemplate(event) {
 export default class FormEditView extends AbstractStatefulView {
   #offers = null;
   #checkedOffers = null;
+  destinations = null;
   #destination = null;
 
   #handleFormEditClick = null;
   #handleFormSubmit = null;
 
-  constructor({event, offers, checkedOffers, destination, onFormEditClick, onFormSubmit}) {
+  constructor({event, offers, checkedOffers, destinations, destination, onFormEditClick, onFormSubmit}) {
     super();
     this.#offers = offers;
     this.#checkedOffers = checkedOffers;
+    this.#destinations = destinations;
+    console.log(this.#destinations);
     this.#destination = destination;
 
     this.#handleFormEditClick = onFormEditClick;
     this.#handleFormSubmit = onFormSubmit;
 
     this._setState(FormEditView.parseEventToState({event: event}));
+    this._restoreHandlers();
+  }
 
+  get template() {
+    return createEditPointTemplate({
+      offers: this.#offers,
+      checkedOffers: this.#checkedOffers,
+      destination: this.#destination,
+      state: this._state,
+    });
+  }
+
+  reset = (event) => this.updateElement({event});
+
+  // removeElement () => {
+  //   super.removeElement();
+  // };
+
+  _restoreHandlers = () => {
     this.element.querySelector('.event__rollup-btn')
       .addEventListener('click', this.#editClickHandler);
     this.element.querySelector('form')
@@ -178,16 +198,7 @@ export default class FormEditView extends AbstractStatefulView {
       .addEventListener('change', this.#offersChangeHandler);
     this.element.querySelector('.event__input--price')
       .addEventListener('change', this.#priceChangeHandler);
-  }
-
-  get template() {
-    return createEditPointTemplate({
-      offers: this.#offers,
-      checkedOffers: this.#checkedOffers,
-      destination: this.#destination,
-      event: this._state.event,
-    });
-  }
+  };
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
@@ -201,7 +212,7 @@ export default class FormEditView extends AbstractStatefulView {
 
   #typeChangeHandler = (evt) => {
     this.updateElement({
-      event: {...this._state.event,
+      event: {...this._state.event.offers,
         type: evt.target.value,
         offers: [],
       }
@@ -209,21 +220,23 @@ export default class FormEditView extends AbstractStatefulView {
   };
 
   #destinationChangeHandler = (evt) => {
-    const selectedDestination = DESTINATIONS.find((destination) => destination);
+    console.log(this.#destinations, evt.target.value);
+    const selectedDestination = this.#destinations.find((eventDestination) => eventDestination.name === evt.target.value);
     console.log(selectedDestination);
     const selectedDestinationId = (selectedDestination) ? selectedDestination.id : null;
     this.updateElement({
       event: {...this._state.event,
-        description: selectedDestinationId,
+        destination: selectedDestinationId,
       }
     })
   };
 
   #offersChangeHandler = (evt) => {
-    const checkedBoxes = Arrey.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
+    const checkedBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
+    this.#checkedOffers = checkedBoxes;
     this._setState({
       event: {...this._state.event,
-        checkedOffers: checkedBoxes,
+        offers: checkedBoxes.map((item) => (item.id)),
       }
     })
   };

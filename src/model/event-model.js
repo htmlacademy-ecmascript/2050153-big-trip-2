@@ -32,6 +32,11 @@ export default class EventsModel {
     return this.#destinations;
   }
 
+  getDestinations() {
+    const allDestinations = this.destinations;
+    return addDestinations;
+  }
+
   getDestinationById(id) {
     const allDestinations = this.destinations;
     return allDestinations.find((item) => item.id === id);
