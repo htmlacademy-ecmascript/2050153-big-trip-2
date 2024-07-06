@@ -33,8 +33,8 @@ export default class EventsModel {
   }
 
   getDestinations() {
-    const allDestinations = this.destinations;
-    return addDestinations;
+    const allDataDestilations = this.destinations;
+    return allDataDestilations;
   }
 
   getDestinationById(id) {

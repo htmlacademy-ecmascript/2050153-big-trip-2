@@ -33,7 +33,7 @@ export default class EventPresenter {
 
     this.#eventComponent = new EventItemView({
       event: this.#event,
-      offers: [...this.#eventsModel.getOfferById(event.type, event.offers)],
+      checkedOffers: [...this.#eventsModel.getOfferById(event.type, event.offers)],
       destination: this.#eventsModel.getDestinationById(event.destination),
       onEditClick: this.#handleEditClick,
       onFavoriteClick: this.#handleFavoriteClick,
@@ -43,11 +43,13 @@ export default class EventPresenter {
       event: this.#event,
       checkedOffers: [...this.#eventsModel.getOfferById(event.type, event.offers)],
       offers: this.#eventsModel.getOffersByType(event.type),
+      destinations: this.#eventsModel.getDestinations(),
       destination: this.#eventsModel.getDestinationById(event.destination),
-      destinations: [...this.#eventsModel.destinations],
       onFormEditClick: this.#handleFormEditClick,
       onFormSubmit: this.#handleFormSubmit,
     });
+
+    console.log(this.#formEditComponent);
 
     if (prevEventComponent === null || prevFormEditComponent === null) {
       render(this.#eventComponent, this.#eventListContainer);
@@ -94,6 +96,7 @@ export default class EventPresenter {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
       this.#formEditComponent.reset(this.#event);
+      console.log(1, this.#formEditComponent);
       this.#replaceFormToEvent();
     }
   };
@@ -108,11 +111,14 @@ export default class EventPresenter {
 
   #handleFormEditClick = () => {
     this.#formEditComponent.reset(this.#event);
+    console.log(2, this.#formEditComponent);
     this.#replaceFormToEvent();
   };
 
   #handleFormSubmit = (event) => {
     this.#handleDataChange(event);
+    this.#formEditComponent.reset(this.#event);
+    console.log(3, this.#formEditComponent);
     this.#replaceFormToEvent();
   };
 }

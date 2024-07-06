@@ -6,8 +6,7 @@ const DESTINATIONS = [
   'Phuket',
   'Fiji',
   'Paris',
-  'Venice',
-  'London'
+  'Venice'
 ];
 
 const DESCRIPTIONS = [

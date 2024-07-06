@@ -52,4 +52,20 @@ function updateItem (items, update) {
   return items.map((item) => item.id === update.id ? update : item);
 }
 
-export { getRandomArrayElement, getRandomInteger, getArrayFromRandomElements, dateFormat, humanizeDate, getDifferenceInTime, capitalizeWords, isEscapeKey, updateItem };
+/**
+ * Function to getTotalEventPrice
+ * Parametrs: event.basePrice, offers.price
+ */
+function getTotalPrice (basePrice, offerPrices) {
+  let totalOfferesPrice = 0;
+
+  offerPrices.forEach(function(value, index) {
+    totalOfferesPrice += +value;
+  });
+
+  const totalPrice = basePrice + totalOfferesPrice;
+  return totalPrice;
+}
+
+
+export { getRandomArrayElement, getRandomInteger, getArrayFromRandomElements, dateFormat, humanizeDate, getDifferenceInTime, capitalizeWords, isEscapeKey, updateItem, getTotalPrice };
