@@ -127,14 +127,14 @@ function createEventTypeTemplate(id, type) {
   );
 }
 
-function createHeaderTypeDestinationTemplate(type, name) {
+function createHeaderTypeDestinationTemplate(type, name, id) {
   return (
     `<div class="event__field-group  event__field-group--destination">
-      <label class="event__label  event__type-output" for="event-destination-1">
+      <label class="event__label  event__type-output" for="event-destination-${id}">
         ${capitalizeWords(type)}
       </label>
-      <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value=${name} list="destination-list-1">
-      <datalist id="destination-list-1">
+      <input class="event__input  event__input--destination" id="event-destination-${id}" type="text" name="event-destination" value=${name} list="destination-list-${id}">
+      <datalist id="destination-list-${id}">
         ${DESTINATIONS.map((item) => createDestinationNameTemplate(item)).join('')}
       </datalist>
     </div>`
@@ -142,7 +142,7 @@ function createHeaderTypeDestinationTemplate(type, name) {
 }
 
 function createEditPointTemplate({offers, checkedOffers, destination, state}) {
-  const { event: {id, type, dateFrom, dateTo, basePrice} } = state;
+  const { id, type, dateFrom, dateTo, basePrice } = state;
   const { name } = destination;
 
   return (
@@ -150,7 +150,7 @@ function createEditPointTemplate({offers, checkedOffers, destination, state}) {
       <form class="event event--edit" action="#" method="post">
         <header class="event__header">
           ${createEventTypeTemplate(id, type)}
-          ${createHeaderTypeDestinationTemplate(type, name)}
+          ${createHeaderTypeDestinationTemplate(type, name, destination.id)}
           ${createDurationTemplate(id, dateFrom, dateTo)}
           ${createPriceTemplate(id, basePrice, checkedOffers)}
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -187,7 +187,7 @@ export default class FormEditView extends AbstractStatefulView {
     this.#handleFormEditClick = onFormEditClick;
     this.#handleFormSubmit = onFormSubmit;
 
-    this._setState(FormEditView.parseEventToState({event: event}));
+    this._setState(FormEditView.parseEventToState({event}));
     this._restoreHandlers();
   }
 
@@ -219,7 +219,7 @@ export default class FormEditView extends AbstractStatefulView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(FormEditView.parseStateToEvent(this._state));
+    this.#handleFormSubmit(FormEditView.parseStateToEvent({...this._state}));
   };
 
   #editClickHandler = (evt) => {
@@ -229,43 +229,34 @@ export default class FormEditView extends AbstractStatefulView {
 
   #typeChangeHandler = (evt) => {
     this.updateElement({
-      event: {...this._state.event.offers,
         type: evt.target.value,
         offers: [],
-      }
-    })
+    });
   };
 
   #destinationChangeHandler = (evt) => {
     const selectedDestination = this.#destinations.find((eventDestination) => eventDestination.name === evt.target.value);
     const selectedDestinationId = (selectedDestination) ? selectedDestination.id : null;
     this.updateElement({
-      event: {...this._state.event,
         destination: selectedDestinationId,
-      }
-    })
+    });
   };
 
   #offersChangeHandler = (evt) => {
     const checkedBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
     this.#checkedOffers = checkedBoxes;
     this._setState({
-      event: {...this._state.event,
         offers: checkedBoxes.map((item) => (item.id)),
-      }
     });
   };
 
   #priceChangeHandler= (evt) => {
     this._setState({
-      event: {...this._state.event,
         basePrice: +evt.target.value,
-      }
-    })
-    console.log(this._state.event.basePrice);
+    });
   };
 
-  static parseEventToState = ({event}) => ({event});
+  static parseEventToState = ({event}) => ({...event});
 
-  static parseStateToEvent = (state) => state.event;
+  static parseStateToEvent = (state) => ({...state});
 }

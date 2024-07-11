@@ -49,8 +49,6 @@ export default class EventPresenter {
       onFormSubmit: this.#handleFormSubmit,
     });
 
-    console.log(this.#formEditComponent);
-
     if (prevEventComponent === null || prevFormEditComponent === null) {
       render(this.#eventComponent, this.#eventListContainer);
       return;
@@ -75,6 +73,7 @@ export default class EventPresenter {
 
   resetView() {
     if (this.#mode !== Mode.DEFAULT) {
+      this.#formEditComponent.reset(this.#event);
       this.#replaceFormToEvent();
     }
   }
@@ -96,7 +95,7 @@ export default class EventPresenter {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
       this.#formEditComponent.reset(this.#event);
-      console.log(1, this.#formEditComponent);
+      // console.log(1, this.#formEditComponent);
       this.#replaceFormToEvent();
     }
   };
@@ -111,14 +110,14 @@ export default class EventPresenter {
 
   #handleFormEditClick = () => {
     this.#formEditComponent.reset(this.#event);
-    console.log(2, this.#formEditComponent);
+    // console.log(2, this.#formEditComponent);
     this.#replaceFormToEvent();
   };
 
   #handleFormSubmit = (event) => {
     this.#handleDataChange(event);
     this.#formEditComponent.reset(this.#event);
-    console.log(3, this.#formEditComponent);
+    // console.log(3, this.#formEditComponent);
     this.#replaceFormToEvent();
   };
 }

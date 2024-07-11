@@ -43,6 +43,7 @@ export default class PagePresenter {
   };
 
   #handleEventChange = (updatedEvent) => {
+    console.log('updatedEvent', updatedEvent);
     this.#pageEvents = updateItem(this.#pageEvents, updatedEvent);
     this.#sortedEvents = updateItem(this.#sortedEvents, updatedEvent);
     this.#eventPresenters.get(updatedEvent.id).init(updatedEvent);
