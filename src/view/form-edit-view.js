@@ -1,16 +1,18 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { DESTINATIONS, TYPES } from '../const.js';
-import { humanizeDate, capitalizeWords, dateFormat, getTotalPrice } from '../utils/utils.js';
+import { humanizeDate, capitalizeWords, dateFormat, getTotalPrice, getEventTypeOffer, getDestinationById, getDestinationByTargetName } from '../utils/utils.js';
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
 
 export function createDestinationNameTemplate(name) {
   return (`<option value=${name}></option>`);
 }
 
-export function createTypeTemplate(type) {
+export function createTypeTemplate(type, id) {
   return (
     `<div class="event__type-item">
-      <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value=${type}>
-      <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${capitalizeWords(type)}</label>
+      <input id="event-type-${type}-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value=${type}>
+      <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-${id}">${capitalizeWords(type)}</label>
     </div>`
   );
 }
@@ -120,7 +122,7 @@ function createEventTypeTemplate(id, type) {
         <fieldset class="event__type-group">
           <legend class="visually-hidden">Event type</legend>
 
-          ${TYPES.map((item) => createTypeTemplate(item)).join('')}
+          ${TYPES.map((item) => createTypeTemplate(item, id)).join('')}
         </fieldset>
       </div>
     </div>`
@@ -150,7 +152,7 @@ function createEditPointTemplate({offers, checkedOffers, destination, state}) {
       <form class="event event--edit" action="#" method="post">
         <header class="event__header">
           ${createEventTypeTemplate(id, type)}
-          ${createHeaderTypeDestinationTemplate(type, name, destination.id)}
+          ${createHeaderTypeDestinationTemplate(type, name, id)}
           ${createDurationTemplate(id, dateFrom, dateTo)}
           ${createPriceTemplate(id, basePrice, checkedOffers)}
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -229,8 +231,8 @@ export default class FormEditView extends AbstractStatefulView {
 
   #typeChangeHandler = (evt) => {
     this.updateElement({
-        type: evt.target.value,
-        offers: [],
+      type: evt.target.value,
+      offers: [],
     });
   };
 
@@ -238,7 +240,7 @@ export default class FormEditView extends AbstractStatefulView {
     const selectedDestination = this.#destinations.find((eventDestination) => eventDestination.name === evt.target.value);
     const selectedDestinationId = (selectedDestination) ? selectedDestination.id : null;
     this.updateElement({
-        destination: selectedDestinationId,
+      destination: selectedDestinationId,
     });
   };
 
@@ -246,13 +248,13 @@ export default class FormEditView extends AbstractStatefulView {
     const checkedBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
     this.#checkedOffers = checkedBoxes;
     this._setState({
-        offers: checkedBoxes.map((item) => (item.id)),
+      offers: checkedBoxes.map((item) => (item.id)),
     });
   };
 
-  #priceChangeHandler= (evt) => {
+  #priceChangeHandler = (evt) => {
     this._setState({
-        basePrice: +evt.target.value,
+      basePrice: +evt.target.value,
     });
   };
 

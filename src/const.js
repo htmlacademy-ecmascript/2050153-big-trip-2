@@ -40,7 +40,7 @@ const Filters = {
   PAST: 'past',
   PRESENT: 'present',
   FUTURE: 'future',
-}
+};
 
 const TextNoEvent = {
   EVERYTHING: 'Click New Event to create your first point',

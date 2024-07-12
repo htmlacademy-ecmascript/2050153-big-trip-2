@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-const MILLISECONDS_IN_MINUTES = 60000;
+// const MILLISECONDS_IN_MINUTES = 60000;
 const SECONDS_IN_MINUTS = 60;
 const HOURS_IN_DAY = 24;
 
@@ -36,7 +36,7 @@ const isEscapeKey = (evt) => (evt).key === 'Escape';
 const humanizeDate = (eventDate, format) => eventDate ? dayjs(eventDate).format(format) : '';
 
 function getDifferenceInTime(start, end) {
-  const difference = dayjs(end).diff(dayjs(start))
+  const difference = dayjs(end).diff(dayjs(start));
 
   switch (difference) {
     case difference < SECONDS_IN_MINUTS:
@@ -59,13 +59,10 @@ function updateItem (items, update) {
 function getTotalPrice (basePrice, offerPrices) {
   let totalOfferesPrice = 0;
 
-  offerPrices.forEach(function(value, index) {
-    totalOfferesPrice += +value;
-  });
+  offerPrices.forEach((value) => totalOfferesPrice += +value);
 
   const totalPrice = basePrice + totalOfferesPrice;
   return totalPrice;
 }
-
 
 export { getRandomArrayElement, getRandomInteger, getArrayFromRandomElements, dateFormat, humanizeDate, getDifferenceInTime, capitalizeWords, isEscapeKey, updateItem, getTotalPrice };

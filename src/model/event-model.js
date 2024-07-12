@@ -1,4 +1,3 @@
-import { getRandomArrayElement } from '../utils/utils.js';
 import { getRandomEvent } from '../mock/event-points.js';
 import { mockDestinations } from '../mock/destinations.js';
 import { mockOffers } from '../mock/offers.js';
