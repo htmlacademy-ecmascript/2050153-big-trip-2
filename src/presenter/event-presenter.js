@@ -1,7 +1,7 @@
 import EventItemView from '../view/event-view.js';
 import FormEditView from '../view/form-edit-view.js';
 import { render, replace, remove } from '../framework/render.js';
-import { isEscapeKey } from '../utils/utils.js';
+import { isEscapeKey, isEnterKey } from '../utils/utils.js';
 import { Mode } from '../const.js';
 
 export default class EventPresenter {
@@ -33,7 +33,7 @@ export default class EventPresenter {
 
     this.#eventComponent = new EventItemView({
       event: this.#event,
-      offers: [...this.#eventsModel.getOfferById(event.type, event.offers)],
+      checkedOffers: [...this.#eventsModel.getOfferById(event.type, event.offers)],
       destination: this.#eventsModel.getDestinationById(event.destination),
       onEditClick: this.#handleEditClick,
       onFavoriteClick: this.#handleFavoriteClick,
@@ -43,6 +43,7 @@ export default class EventPresenter {
       event: this.#event,
       checkedOffers: [...this.#eventsModel.getOfferById(event.type, event.offers)],
       offers: this.#eventsModel.getOffersByType(event.type),
+      destinations: this.#eventsModel.getDestinations(),
       destination: this.#eventsModel.getDestinationById(event.destination),
       onFormEditClick: this.#handleFormEditClick,
       onFormSubmit: this.#handleFormSubmit,
@@ -72,6 +73,7 @@ export default class EventPresenter {
 
   resetView() {
     if (this.#mode !== Mode.DEFAULT) {
+      this.#formEditComponent.reset(this.#event);
       this.#replaceFormToEvent();
     }
   }
@@ -92,9 +94,19 @@ export default class EventPresenter {
   #escKeyDownHandler = (evt) => {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
+      this.#formEditComponent.reset(this.#event);
+      // console.log(1, this.#formEditComponent);
       this.#replaceFormToEvent();
     }
   };
+
+  // #enterKeyDownHandler = (evt) => {
+  //   if (isEnterKey(evt)) {
+  //     evt.preventDefault();
+  //     this.#formEditComponent.reset(this.#event);
+  //     this.#handleDataChange(this.#event);
+  //   }
+  // };
 
   #handleFavoriteClick = () => {
     this.#handleDataChange({...this.#event, isFavorite: !this.#event.isFavorite});
@@ -105,11 +117,15 @@ export default class EventPresenter {
   };
 
   #handleFormEditClick = () => {
+    this.#formEditComponent.reset(this.#event);
+    // console.log(2, this.#formEditComponent);
     this.#replaceFormToEvent();
   };
 
   #handleFormSubmit = (event) => {
     this.#handleDataChange(event);
+    // this.#formEditComponent.reset(this.#event);
+    // console.log(3, this.#formEditComponent);
     this.#replaceFormToEvent();
   };
 }

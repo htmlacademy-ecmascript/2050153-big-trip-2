@@ -42,10 +42,16 @@ export default class PagePresenter {
     this.#eventPresenters.forEach((presenter) => presenter.resetView());
   };
 
-  #handleEventChange = (updatedEvent) => {
+  #handleEventChange = (updatedEvent, sortType) => {
+    console.log('updatedEvent', updatedEvent);
     this.#pageEvents = updateItem(this.#pageEvents, updatedEvent);
     this.#sortedEvents = updateItem(this.#sortedEvents, updatedEvent);
     this.#eventPresenters.get(updatedEvent.id).init(updatedEvent);
+    this.#sortEvents(this.#currentSortType);
+    // - Очищаем список
+    this.#clearEvents();
+    // - Рендерим список заново
+    this.#pageEvents.forEach((i) => this.#renderEvent(i));
   };
 
   #handleSortTypeChange = (sortType) => {
@@ -55,6 +61,7 @@ export default class PagePresenter {
     }
 
     this.#sortEvents(sortType);
+    this.#sortTypes.forEach((i) => (i.type === sortType) ? (i.isChecked = true) : (i.isChecked = false));
     // - Очищаем сортировку
     this.#clearSortTypes();
     // - Рендерим сортировку заново
@@ -83,9 +90,7 @@ export default class PagePresenter {
         this.#pageEvents.sort(sortByDay);
         this.#currentSortType = SortType.DEFAULT;
     }
-
     this.#currentSortType = sortType;
-    this.#sortTypes.forEach((i) => (i.type === sortType) ? (i.isChecked = true) : (i.isChecked = false));
   }
 
   #renderSort() {
@@ -125,7 +130,7 @@ export default class PagePresenter {
     render(this.#tripListComponent, this.#pageContainer);
   }
 
-  #renderEvents() {
+  #renderEvents(sortType) {
     if (this.#pageEvents.length === 0) {
       this.#renderNoEvents();
       return;

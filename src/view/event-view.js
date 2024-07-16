@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { dateFormat, humanizeDate, getDifferenceInTime, capitalizeWords } from '../utils/utils.js';
+import { dateFormat, humanizeDate, getDurationInTime, capitalizeWords } from '../utils/utils.js';
 
 function createOfferTemplate({title, price}) {
   return (
@@ -11,7 +11,7 @@ function createOfferTemplate({title, price}) {
   );
 }
 
-function createEventItemTemplate(event, offers, destination) {
+function createEventItemTemplate(event, checkedOffers, destination) {
   const { type, dateFrom, dateTo, isFavorite, basePrice } = event;
   const { name } = destination;
 
@@ -33,14 +33,14 @@ function createEventItemTemplate(event, offers, destination) {
             &mdash;
             <time class="event__end-time" datetime="${dateTo}">${humanizeDate(dateTo, dateFormat.HOURS)}</time>
           </p>
-          <p class="event__duration">${getDifferenceInTime(dateFrom, dateTo)}M</p>
+          <p class="event__duration">${getDurationInTime(dateFrom, dateTo)}M</p>
         </div>
         <p class="event__price">
           &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
         </p>
         <h4 class="visually-hidden">Offers:</h4>
         <ul class="event__selected-offers">
-          ${offers.map((offer) => createOfferTemplate(offer)).join('')}
+          ${checkedOffers.map((offer) => createOfferTemplate(offer)).join('')}
         </ul>
         <button class="event__favorite-btn ${favouriteClassName}" type="button">
           <span class="visually-hidden">Add to favorite</span>
@@ -58,16 +58,16 @@ function createEventItemTemplate(event, offers, destination) {
 
 export default class EventItemView extends AbstractView {
   #event = null;
-  #offers = null;
+  #checkedOffers = null;
   #destination = null;
 
   #handleEditClick = null;
   #handleFavoriteClick = null;
 
-  constructor({event, offers, destination, onEditClick, onFavoriteClick}) {
+  constructor({event, checkedOffers, destination, onEditClick, onFavoriteClick}) {
     super();
     this.#event = event;
-    this.#offers = offers;
+    this.#checkedOffers = checkedOffers;
     this.#destination = destination;
 
     this.#handleEditClick = onEditClick;
@@ -80,7 +80,7 @@ export default class EventItemView extends AbstractView {
   }
 
   get template() {
-    return createEventItemTemplate(this.#event, this.#offers, this.#destination);
+    return createEventItemTemplate(this.#event, this.#checkedOffers, this.#destination);
   }
 
   #editClickHandler = (evt) => {

@@ -1,4 +1,3 @@
-import { getRandomArrayElement } from '../utils/utils.js';
 import { getRandomEvent } from '../mock/event-points.js';
 import { mockDestinations } from '../mock/destinations.js';
 import { mockOffers } from '../mock/offers.js';
@@ -28,12 +27,17 @@ export default class EventsModel {
     return offersType.offers.filter((item) => itemsId.find((id) => item.id === id));
   }
 
-  get destination() {
+  get destinations() {
     return this.#destinations;
   }
 
+  getDestinations() {
+    const allDataDestilations = this.destinations;
+    return allDataDestilations;
+  }
+
   getDestinationById(id) {
-    const allDestinations = this.destination;
+    const allDestinations = this.destinations;
     return allDestinations.find((item) => item.id === id);
   }
 }

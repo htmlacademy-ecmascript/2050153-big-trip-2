@@ -1,18 +1,18 @@
 import { getRandomInteger, getArrayFromRandomElements, getRandomArrayElement } from '../utils/utils.js';
-import { DESCRIPTIONS, DESTINATIONS } from '../const.js';
+import { DESCRIPTIONS } from '../const.js';
 
 const mockDestinations = [
   {
     id: 'bfa5cb75-a1fe-4b77-a83c-0e528e910e01',
     description: getArrayFromRandomElements(DESCRIPTIONS),
-    name: getRandomArrayElement(DESTINATIONS),
+    name: 'Amsterdam',
     pictures: [
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
     ],
@@ -20,24 +20,24 @@ const mockDestinations = [
   {
     id: 'bfa5cb75-a1fe-4b77-a83c-0e528e910e02',
     description: getArrayFromRandomElements(DESCRIPTIONS),
-    name: getRandomArrayElement(DESTINATIONS),
+    name: 'Chamonix',
     pictures: [],
   },
   {
     id: 'bfa5cb75-a1fe-4b77-a83c-0e528e910e03',
     description: getArrayFromRandomElements(DESCRIPTIONS),
-    name: getRandomArrayElement(DESTINATIONS),
+    name: 'Geneva',
     pictures: [
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
     ],
@@ -45,10 +45,10 @@ const mockDestinations = [
   {
     id: 'bfa5cb75-a1fe-4b77-a83c-0e528e910e04',
     description: getArrayFromRandomElements(DESCRIPTIONS),
-    name: getRandomArrayElement(DESTINATIONS),
+    name: 'Sydney',
     pictures: [
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       }
     ],
@@ -56,22 +56,22 @@ const mockDestinations = [
   {
     id: 'bfa5cb75-a1fe-4b77-a83c-0e528e910e05',
     description: getArrayFromRandomElements(DESCRIPTIONS),
-    name: getRandomArrayElement(DESTINATIONS),
+    name: 'Phuket',
     pictures: [
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
     ],
@@ -79,14 +79,14 @@ const mockDestinations = [
   {
     id: 'bfa5cb75-a1fe-4b77-a83c-0e528e910e06',
     description: getArrayFromRandomElements(DESCRIPTIONS),
-    name: getRandomArrayElement(DESTINATIONS),
+    name: 'Fiji',
     pictures: [
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
     ],
@@ -94,25 +94,25 @@ const mockDestinations = [
   {
     id: 'bfa5cb75-a1fe-4b77-a83c-0e528e910e07',
     description: getArrayFromRandomElements(DESCRIPTIONS),
-    name: getRandomArrayElement(DESTINATIONS),
+    name: 'Paris',
     pictures: [
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },{
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
     ],
@@ -120,10 +120,10 @@ const mockDestinations = [
   {
     id: 'bfa5cb75-a1fe-4b77-a83c-0e528e910e08',
     description: getArrayFromRandomElements(DESCRIPTIONS),
-    name: getRandomArrayElement(DESTINATIONS),
+    name: 'Venice',
     pictures: [
       {
-        src: `https:loremflicker.com/248/152?random=${getRandomInteger(1,15)}`,
+        src: `http://picsum.photos/300/200?random=${getRandomInteger(1,15)}.jpg`,
         description: getRandomArrayElement(DESCRIPTIONS),
       },
     ],
