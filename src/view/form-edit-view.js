@@ -98,6 +98,7 @@ function createPriceTemplate(id, basePrice, checkedOffers) {
 }
 
 function createDurationTemplate(id, dateFrom, dateTo) {
+  console.log(humanizeDate(dateFrom, dateFormat.DATE), humanizeDate(dateTo, dateFormat.DATE))
   return (
     `<div class="event__field-group  event__field-group--time">
       <label class="visually-hidden" for="event-start-time-${id}">From</label>
@@ -279,14 +280,14 @@ export default class FormEditView extends AbstractStatefulView {
     });
   };
 
-  #dateToChangeHandler = ([userDate]) => {
+  #dateToChangeHandler = (userDate) => {
     this._setState({
       dateTo: userDate,
     });
     this.#datepickerTo.set('minDate', this._state.dateFrom);
   };
 
-  #dateFromChangeHandler = ([userDate]) => {
+  #dateFromChangeHandler = (userDate) => {
     this._setState({
       dateFrom: userDate,
     });
@@ -296,8 +297,11 @@ export default class FormEditView extends AbstractStatefulView {
   #setDatepickers() {
     const [dateFromElement, dateToElement] = this.element.querySelectorAll('.event__input--time');
     const commonConfig = {
-      deteFormat: 'j/m/y H:i',
+      deteFormat: 'd/m/y H:i',
+      altInput: true,
+      altFormat: 'd/m/y H:i',
       enableTime: true,
+      "time_24hr": true,
     }
 
     this.#datepickerFrom = flatpickr(
