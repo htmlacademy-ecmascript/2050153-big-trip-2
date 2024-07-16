@@ -1,7 +1,7 @@
 import EventItemView from '../view/event-view.js';
 import FormEditView from '../view/form-edit-view.js';
 import { render, replace, remove } from '../framework/render.js';
-import { isEscapeKey } from '../utils/utils.js';
+import { isEscapeKey, isEnterKey } from '../utils/utils.js';
 import { Mode } from '../const.js';
 
 export default class EventPresenter {
@@ -100,6 +100,14 @@ export default class EventPresenter {
     }
   };
 
+  // #enterKeyDownHandler = (evt) => {
+  //   if (isEnterKey(evt)) {
+  //     evt.preventDefault();
+  //     this.#formEditComponent.reset(this.#event);
+  //     this.#handleDataChange(this.#event);
+  //   }
+  // };
+
   #handleFavoriteClick = () => {
     this.#handleDataChange({...this.#event, isFavorite: !this.#event.isFavorite});
   };
@@ -116,7 +124,7 @@ export default class EventPresenter {
 
   #handleFormSubmit = (event) => {
     this.#handleDataChange(event);
-    this.#formEditComponent.reset(this.#event);
+    // this.#formEditComponent.reset(this.#event);
     // console.log(3, this.#formEditComponent);
     this.#replaceFormToEvent();
   };

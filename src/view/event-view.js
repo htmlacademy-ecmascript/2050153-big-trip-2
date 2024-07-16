@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { dateFormat, humanizeDate, getDifferenceInTime, capitalizeWords } from '../utils/utils.js';
+import { dateFormat, humanizeDate, getDurationInTime, capitalizeWords } from '../utils/utils.js';
 
 function createOfferTemplate({title, price}) {
   return (
@@ -33,7 +33,7 @@ function createEventItemTemplate(event, checkedOffers, destination) {
             &mdash;
             <time class="event__end-time" datetime="${dateTo}">${humanizeDate(dateTo, dateFormat.HOURS)}</time>
           </p>
-          <p class="event__duration">${getDifferenceInTime(dateFrom, dateTo)}M</p>
+          <p class="event__duration">${getDurationInTime(dateFrom, dateTo)}M</p>
         </div>
         <p class="event__price">
           &euro;&nbsp;<span class="event__price-value">${basePrice}</span>

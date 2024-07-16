@@ -1,6 +1,6 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { DESTINATIONS, TYPES } from '../const.js';
-import { humanizeDate, capitalizeWords, dateFormat, getTotalPrice, getEventTypeOffer, getDestinationById, getDestinationByTargetName } from '../utils/utils.js';
+import { humanizeDate, capitalizeWords, dateFormat, getEventTypeOffer, getDestinationById, getDestinationByTargetName } from '../utils/utils.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
@@ -84,7 +84,7 @@ function createDestinationTemplate(destination) {
 }
 
 function createPriceTemplate(id, basePrice, checkedOffers) {
-  const offerPrices = checkedOffers.map((i) => i.price);
+  // const offerPrices = checkedOffers.map((i) => i.price);
 
   return (
     `<div class="event__field-group  event__field-group--price">
@@ -92,7 +92,7 @@ function createPriceTemplate(id, basePrice, checkedOffers) {
         <span class="visually-hidden">Price</span>
         &euro;
       </label>
-      <input class="event__input  event__input--price" id="event-price-${id}" type="text" name="event-price" value=${getTotalPrice(basePrice, offerPrices)}>
+      <input class="event__input  event__input--price" id="event-price-${id}" type="text" name="event-price" value=${basePrice}>
     </div>`
   );
 }
@@ -296,7 +296,7 @@ export default class FormEditView extends AbstractStatefulView {
   #setDatepickers() {
     const [dateFromElement, dateToElement] = this.element.querySelectorAll('.event__input--time');
     const commonConfig = {
-      deteFormat: 'd/m/y H:i',
+      deteFormat: 'j/m/y H:i',
       enableTime: true,
     }
 
