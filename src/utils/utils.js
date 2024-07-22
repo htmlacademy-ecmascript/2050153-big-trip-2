@@ -36,7 +36,6 @@ const getArrayFromRandomElements = (elements) => Array.from(
 const capitalizeWords = (str) => str.replace(/\b\w/g, c => c.toUpperCase());
 
 const isEscapeKey = (evt) => (evt).key === 'Escape';
-const isEnterKey = (evt) => (evt).key === 'Enter';
 
 // Приобразование данных по дате в нужный формат
 const humanizeDate = (eventDate, format) => eventDate ? dayjs(eventDate).format(format) : '';
@@ -94,10 +93,6 @@ function getDurationInTime(start, end) {
   return eventDuration;
 }
 
-function updateItem (items, update) {
-  return items.map((item) => item.id === update.id ? update : item);
-}
-
 const getPointTypeOffer = (dataOffers, point) => dataOffers.find((offer)=> offer.type === point.type);
 
 const getOfferById = (dataOffers, point) => {
@@ -122,4 +117,4 @@ const getDestinationByTargetName = (dataDestinations, targetName) => dataDestina
 //   return totalPrice;
 // }
 
-export { getRandomArrayElement, getRandomInteger, getArrayFromRandomElements, dateFormat, humanizeDate, getDurationInTime, capitalizeWords, isEscapeKey, getPointTypeOffer, getOfferById, getDestinationByTargetName, getDestinationById, updateItem };
+export { getRandomArrayElement, getRandomInteger, getArrayFromRandomElements, dateFormat, humanizeDate, getDurationInTime, capitalizeWords, isEscapeKey, getPointTypeOffer, getOfferById, getDestinationByTargetName, getDestinationById };

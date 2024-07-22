@@ -35,6 +35,8 @@ const TYPES = [
   'restaurant'
 ];
 
+const EVENT_COUNT = 3;
+
 const Filters = {
   EVERYTHING: 'everything',
   PAST: 'past',
@@ -54,7 +56,7 @@ const Mode = {
   EDITING: 'EDITING',
 };
 
-const SortType = {
+const SortTypes = {
   DEFAULT: 'day',
   EVENT: 'event',
   TIME: 'time',
@@ -62,4 +64,16 @@ const SortType = {
   OFFERS: 'offers',
 };
 
-export { DESTINATIONS, DESCRIPTIONS, TYPES, TextNoEvent, Mode, SortType, Filters };
+const UserAction = {
+  UPDATE_EVENT: 'UPDATE_EVENT',
+  ADD_EVENT: 'ADD_EVENT',
+  DELETE_EVENT: 'DELETE_EVENT',
+};
+
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
+export { DESTINATIONS, DESCRIPTIONS, TYPES, EVENT_COUNT, TextNoEvent, Mode, SortTypes, Filters, UserAction, UpdateType };
