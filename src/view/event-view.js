@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { dateFormat, humanizeDate, getDurationInTime, capitalizeWords } from '../utils/utils.js';
+import { dateFormat, humanizeDate, getDurationInTime, capitalizeWords, getPointTypeOffer, getOfferById, getDestinationByTargetName, getDestinationById } from '../utils/utils.js';
 
 function createOfferTemplate({title, price}) {
   return (
@@ -11,8 +11,10 @@ function createOfferTemplate({title, price}) {
   );
 }
 
-function createEventItemTemplate(event, checkedOffers, destination) {
+function createEventItemTemplate(event, dataOffers, dataDestinations) {
   const { type, dateFrom, dateTo, isFavorite, basePrice } = event;
+  const destination = getDestinationById(dataDestinations, event);
+  const eventOffers = getOfferById(dataOffers, event);
   const { name } = destination;
 
   const favouriteClassName = isFavorite
@@ -40,7 +42,7 @@ function createEventItemTemplate(event, checkedOffers, destination) {
         </p>
         <h4 class="visually-hidden">Offers:</h4>
         <ul class="event__selected-offers">
-          ${checkedOffers.map((offer) => createOfferTemplate(offer)).join('')}
+          ${eventOffers.map((offer) => createOfferTemplate(offer)).join('')}
         </ul>
         <button class="event__favorite-btn ${favouriteClassName}" type="button">
           <span class="visually-hidden">Add to favorite</span>
@@ -58,17 +60,17 @@ function createEventItemTemplate(event, checkedOffers, destination) {
 
 export default class EventItemView extends AbstractView {
   #event = null;
-  #checkedOffers = null;
-  #destination = null;
+  #dataOffers = null;
+  #dataDestinations = null;
 
   #handleEditClick = null;
   #handleFavoriteClick = null;
 
-  constructor({event, checkedOffers, destination, onEditClick, onFavoriteClick}) {
+  constructor({event, dataOffers, dataDestinations, onEditClick, onFavoriteClick}) {
     super();
     this.#event = event;
-    this.#checkedOffers = checkedOffers;
-    this.#destination = destination;
+    this.#dataOffers = dataOffers;
+    this.#dataDestinations = dataDestinations;
 
     this.#handleEditClick = onEditClick;
     this.#handleFavoriteClick = onFavoriteClick;
@@ -80,7 +82,7 @@ export default class EventItemView extends AbstractView {
   }
 
   get template() {
-    return createEventItemTemplate(this.#event, this.#checkedOffers, this.#destination);
+    return createEventItemTemplate(this.#event, this.#dataOffers, this.#dataDestinations);
   }
 
   #editClickHandler = (evt) => {
