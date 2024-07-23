@@ -5,7 +5,6 @@ import NoEventsView from '../view/no-events-view.js';
 import EventPresenter from './event-presenter.js';
 import { render, remove, RenderPosition } from '../framework/render.js';
 import { SortTypes, UpdateType, UserAction } from '../const.js';
-// import { updateItem } from '../utils/utils.js';
 import { sortByDay, sortByTime, sortByPrice } from '../utils/sort.js';
 
 export default class PagePresenter {
@@ -17,9 +16,6 @@ export default class PagePresenter {
   #eventsModel = null;
 
   #currentSortType = SortTypes.DEFAULT;
-  // #sortedEvents = [];
-  // #pageEvents = [];
-  // #sortTypes = [];
   #offers = [];
   #destinations = [];
 
@@ -28,27 +24,23 @@ export default class PagePresenter {
   constructor({pageContainer, eventsModel, sorts}) {
     this.#pageContainer = pageContainer;
     this.#eventsModel = eventsModel;
-    // this.#sortTypes = sorts;
     this.#eventsModel.addObserver(this.#handleModelEvent);
   }
 
   get events() {
-    const events = [...this.#eventsModel.events];
-
     switch (this.#currentSortType) {
       case SortTypes.TIME:
-        events.sort(sortByTime);
+        return [...this.#eventsModel.events].sort(sortByTime);
       case SortTypes.PRICE:
-        events.sort(sortByPrice);
+        return [...this.#eventsModel.events].sort(sortByPrice);
     }
-    return events.sort(sortByDay);;
+    return [...this.#eventsModel.events].sort(sortByDay);
   }
 
   init() {
     this.#offers = [...this.#eventsModel.offers];
     this.#destinations = [...this.#eventsModel.destinations];
-    // this.#pageEvents = [...this.#eventsModel.events];
-    // this.#sortedEvents = [...this.#eventsModel.events];
+
     this.#renderSort();
     this.#renderTripList();
   }
@@ -56,17 +48,6 @@ export default class PagePresenter {
   #handleModeChange = () => {
     this.#eventPresenters.forEach((presenter) => presenter.resetView());
   };
-
-  // #handleEventChange = (updatedEvent) => {
-  //   // console.log('updatedEvent', updatedEvent);
-  //   // this.#pageEvents = updateItem(this.#pageEvents, updatedEvent);
-  //   // this.#sortedEvents = updateItem(this.#sortedEvents, updatedEvent);
-  //   // Здесь будем вызывать обновление модели
-  //   this.#eventPresenters.get(updatedEvent.id).init(updatedEvent, this.#offers, this.#destinations);
-  //   // this.#sortEvents(this.#currentSortType);
-  //   // this.#clearEvents();
-  //   // this.#pageEvents.forEach((i) => this.#renderEvent(i, this.#offers, this.#destinations));
-  // };
 
   /**
    * #handleViewAction будет вызывать обновление модели.
@@ -77,33 +58,43 @@ export default class PagePresenter {
   #handleViewAction = (actionType, updateType, update) => {
     console.log(actionType, updateType, update);
     switch (actionType) {
-      case UserAction.UPDATE_TASK:
-        this.#eventsModel.updateTask(updateType, update);
+      case UserAction.UPDATE_EVENT:
+        this.#eventsModel.updateEvent(updateType, update);
         break;
-      case UserAction.ADD_TASK:
-        this.#eventsModel.addTask(updateType, update);
+      case UserAction.ADD_EVENT:
+        this.#eventsModel.addEvent(updateType, update);
         break;
-      case UserAction.DELETE_TASK:
-        this.#eventsModel.deleteTask(updateType, update);
+      case UserAction.DELETE_EVENT:
+        this.#eventsModel.deleteEvent(updateType, update);
         break;
     }
   };
 
+   /**
+   * #handleModelEvent будет обновлять точки маршрута или всю страницу
+   * в зависимости от типа изменений:
+   * updateType - тип изменений:
+   * - PATCH - обновит часть или всю event(точку маршрута),
+   * - MINOR - обновит events (точки маршрута),
+   * - MAJOR - обновить всю страницу (например, при переключении фильтра.
+   * data - обновленные данные
+   */
   #handleModelEvent = (updateType, data) => {
     console.log(updateType, data);
     switch (updateType) {
       case UpdateType.PATCH:
         this.#eventPresenters.get(data.id).init(data, this.#offers, this.#destinations);
+        this.#clearTripList();
+        this.#renderSort();
+        this.#renderTripList();
         break;
       case UpdateType.MINOR:
-        // - ообновить events (точки маршрута)
-        this.#clearEvents();
-        // this.#renderSort();
+        this.#clearTripList();
+        this.#renderSort();
         this.#renderTripList();
         break;
       case UpdateType.MAJOR:
-        // - обновить всю страницу (например, при переключении фильтра)
-        this.#clearEvents({resetSortType: true});
+        this.#clearTripList({resetSortType: true});
         this.#renderSort();
         this.#renderTripList();
         break;
@@ -116,34 +107,13 @@ export default class PagePresenter {
     }
 
     this.#currentSortType = sortType;
-    // this.#sortEvents(sortType);
-    // this.#sortTypes.forEach((i) => (i.type === sortType) ? (i.isChecked = true) : (i.isChecked = false));
     // - Очищаем сортировку
-    this.#clearSortTypes();
+    this.#clearTripList();
     // - Рендерим сортировку заново
     this.#renderSort();
-    // - Очищаем список
-    this.#clearEvents();
     // - Рендерим список заново
-
-    this.events.forEach((i) => this.#renderEvent(i, this.#offers, this.#destinations));
+    this.#renderTripList();
   };
-
-  // #sortEvents(sortType) {
-  //   switch (sortType) {
-  //     case SortType.TIME:
-  //       this.#pageEvents.sort(sortByTime);
-  //       break;
-  //     case SortType.PRICE:
-  //       this.#pageEvents.sort(sortByPrice);
-  //       break;
-  //     default:
-  //       this.#pageEvents = [...this.#sortedEvents];
-  //       this.#pageEvents.sort(sortByDay);
-  //       this.#currentSortType = SortType.DEFAULT;
-  //   }
-  //   this.#currentSortType = sortType;
-  // }
 
   #renderSort() {
     this.#sortComponent = new EventSortView({
@@ -170,10 +140,10 @@ export default class PagePresenter {
   }
 
   #renderEvents(events) {
-    events.forEach((i) => this.#renderEvent(i, this.#offers, this.#destinations));
+    events.forEach((event) => this.#renderEvent(event, this.#offers, this.#destinations));
   }
 
-  #clearEvents({ resetSortType = false } = {}) {
+  #clearTripList({ resetSortType = false } = {}) {
     this.#eventPresenters.forEach((presenter) => presenter.destroy());
     this.#eventPresenters.clear();
 
@@ -185,12 +155,8 @@ export default class PagePresenter {
     }
   }
 
-  #clearSortTypes() {
-    remove(this.#sortComponent);
-  }
-
   #renderTripList() {
-    const events = this.events.slice(0, this.events.length);
+    const events = this.events;
     render(this.#tripListComponent, this.#pageContainer);
 
     if (this.events.length === 0) {
@@ -199,20 +165,4 @@ export default class PagePresenter {
     }
     this.#renderEvents(events);
   }
-
-  // #renderEvents() {
-  //   const ev = this.points.slice(0, this.points.length);
-  //   render(this.#pointListComponent, this.#tripEventsContainer);
-
-  //   if (this.events.length === 0) {
-  //     this.#renderNoEvents();
-  //     return;
-  //   }
-
-  //   this.#renderSort();
-  //   this.#renderTripList();
-
-  //   this.events.sort(sortByDay);
-  //   this.events.forEach((i) => this.#renderEvent(i, this.#offers, this.#destinations));
-  // }
 }

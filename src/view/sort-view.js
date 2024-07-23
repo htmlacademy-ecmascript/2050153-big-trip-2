@@ -1,6 +1,6 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import { SortTypes } from '../const.js';
-import { capitalizeWords } from '../utils/utils.js';
+import { capitalizeWords } from '../utils/event.js';
 
 function createSortTemplate(sortType, currentSortType) {
   const isDisabled = (sortType === 'event' || sortType === 'offers') ? 'disabled' : '';

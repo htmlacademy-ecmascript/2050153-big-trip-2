@@ -1,6 +1,6 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import { Filters } from '../const.js';
-import { capitalizeWords } from '../utils/utils.js';
+import { capitalizeWords } from '../utils/event.js';
 
 function createFilterTemplate(filterName) {
   return (

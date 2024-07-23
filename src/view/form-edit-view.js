@@ -1,6 +1,6 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { DESTINATIONS, TYPES } from '../const.js';
-import { humanizeDate, capitalizeWords, dateFormat, getOffersByType, getPointTypeOffer, getDestinationById, getDestinationByTargetName } from '../utils/utils.js';
+import { humanizeDate, capitalizeWords, dateFormat, getOffersByType, getPointTypeOffer, getDestinationById, getDestinationByTargetName } from '../utils/event.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
@@ -179,17 +179,19 @@ export default class FormEditView extends AbstractStatefulView {
 
   #handleFormEditClick = null;
   #handleFormSubmit = null;
+  #handleDeleteClick = null;
 
   #datepickerFrom = null;
   #datepickerTo = null;
 
-  constructor({event, dataOffers, dataDestinations, onFormEditClick, onFormSubmit}) {
+  constructor({event, dataOffers, dataDestinations, onFormEditClick, onFormSubmit, onDeleteClick}) {
     super();
     this.#dataOffers = dataOffers;
     this.#dataDestinations = dataDestinations;
 
     this.#handleFormEditClick = onFormEditClick;
     this.#handleFormSubmit = onFormSubmit;
+    this.#handleDeleteClick = onDeleteClick;
 
     this._setState(FormEditView.parseEventToState({event}));
     this._restoreHandlers();
@@ -234,6 +236,8 @@ export default class FormEditView extends AbstractStatefulView {
       .addEventListener('change', this.#offersChangeHandler);
     this.element.querySelector('.event__input--price')
       .addEventListener('change', this.#priceChangeHandler);
+    this.element.querySelector('.event__reset-btn')
+      .addEventListener('click', this.#formDeleteClickHandler);
 
     this.#setDatepickers();
   };
@@ -246,6 +250,11 @@ export default class FormEditView extends AbstractStatefulView {
   #editClickHandler = (evt) => {
     evt.preventDefault();
     this.#handleFormEditClick();
+  };
+
+  #formDeleteClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleDeleteClick(FormEditView.parseStateToEvent(this._state));
   };
 
   #typeChangeHandler = (evt) => {
