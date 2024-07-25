@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { FilterType } from '../const';
 
 // eslint-disable-next-line no-undef
 const isSameOrBefore = require('dayjs/plugin/isSameOrBefore');
@@ -20,4 +21,11 @@ const isEventInFuture = (dateStart) => {
   return dateStart && dayjs().isBefore(dateStart, 'D');
 };
 
-export { isEventInPresent, isEventInPast, isEventInFuture };
+const filterEvents = {
+  [FilterType.EVERYTHING]: (events) => events,
+  [FilterType.FUTURE]: (events) => events.filter((event) => isEventInFuture(event.dateFrom)),
+  [FilterType.PRESENT]: (events) => events.filter((event) => isEventInPresent(event.dateFrom, event.dateTo)),
+  [FilterType.PAST]: (events) => events.filter((event) => isEventInPast(event.dateTo)),
+};
+
+export { isEventInPresent, isEventInPast, isEventInFuture, filterEvents };

@@ -26,6 +26,7 @@ const capitalizeWords = (str) => str.replace(/\b\w/g, c => c.toUpperCase());
 
 /**
  * getLongDuration - Получение длительности события, которое более 99 дней по продолжительности
+ * Parametrs:
  * start - начало события;
  * end - завершения события;
  */
@@ -65,6 +66,7 @@ const getLongDuration = (start, end) => {
 
 /**
  * getDurationInTime - Получение длительности события
+ * Parametrs:
  * start - начало события;
  * end - завершения события;
  */
@@ -89,6 +91,7 @@ function getDurationInTime(start, end) {
 
 /**
  * getPointTypeOffer - Получение дополнительных предложений в зависимости от типа.
+ * Parametrs:
  * dataOffers - все имеющиеся предложения;
  * point - точка маршрута;
  */
@@ -96,6 +99,7 @@ const getPointTypeOffer = (dataOffers, point) => dataOffers.find((offer)=> offer
 
 /**
  * getOfferById - Получение дополнительных предложений по id
+ * Parametrs:
  * dataOffers - все имеющиеся предложения;
  * point - точка маршрута;
  */
@@ -106,6 +110,7 @@ const getOfferById = (dataOffers, point) => {
 
 /**
  * getDestinationById - Получение описания точки маршрута по id.
+ * Parametrs:
  * dataDestinations - все имеющиеся описания точек маршрута;
  * point - точка маршрута;
  */
@@ -113,9 +118,41 @@ const getDestinationById = (dataDestinations, point) => dataDestinations.find((i
 
 /**
  * getDestinationByTargetName - Получение описания точки маршрута в зависимости от названия точки назначения.
+ * Parametrs:
  * dataDestinations - все имеющиеся описания точек маршрута;
  * targetName - название точки назначения;
  */
 const getDestinationByTargetName = (dataDestinations, targetName) => dataDestinations.find((item)=>item.name === targetName);
 
-export { dateFormat, humanizeDate, getDurationInTime, capitalizeWords, getPointTypeOffer, getOfferById, getDestinationByTargetName, getDestinationById };
+/**
+ * Function to getTotalPrice - получение значения конечной цены точеки назначения плюс дополнительные расстраты
+ * Parametrs: event offers
+ */
+const getTotalEventPrice = (event, offers) => {
+  const eventOffers = getOfferById(offers, event);
+  let totalOfferesPrice = 0;
+
+  eventOffers.forEach((offer) => {
+      totalOfferesPrice += offer.price;
+  });
+
+  const totalEventPrice = event.basePrice + totalOfferesPrice;
+  return totalEventPrice;
+};
+
+/**
+ * Function to getTotalPrice - получение значения конечной цены точеки назначения плюс дополнительные расстраты
+ * Parametrs: events offers
+ */
+const getTotalPrice = (events, offers) => {
+  let totalPrice = 0;
+
+  events.forEach((event) => {
+    const totalEventPrice = getTotalEventPrice(event, offers);
+    totalPrice += totalEventPrice;
+  });
+  return totalPrice;
+};
+
+
+export { dateFormat, humanizeDate, getDurationInTime, capitalizeWords, getPointTypeOffer, getOfferById, getDestinationByTargetName, getDestinationById, getTotalPrice };

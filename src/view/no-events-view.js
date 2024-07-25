@@ -1,12 +1,20 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import { TextNoEvent } from '../const.js';
 
-function createNoEventsTemplate() {
-  return `<p class="trip-events__msg">${ TextNoEvent.EVERYTHING }</p>`;
+function createNoEventsTemplate(filterType) {
+  console.log(filterType);
+  return `<p class="trip-events__msg">${ TextNoEvent[filterType] }</p>`;
 }
 
 export default class NoEventsView extends AbstractView {
+  #filterType = null;
+
+  constructor({filterType}) {
+    super();
+    this.#filterType = filterType;
+  }
+
   get template() {
-    return createNoEventsTemplate();
+    return createNoEventsTemplate(this.#filterType);
   }
 }

@@ -18,17 +18,4 @@ const capitalizeWords = (str) => str.replace(/\b\w/g, c => c.toUpperCase());
 
 const isEscapeKey = (evt) => (evt).key === 'Escape';
 
-/**
- * Function to getTotalEventPrice
- * Parametrs: event.basePrice, offers.price
- */
-// function getTotalPrice (basePrice, offerPrices) {
-//   let totalOfferesPrice = 0;
-
-//   offerPrices.forEach((value) => totalOfferesPrice += +value);
-
-//   const totalPrice = basePrice + totalOfferesPrice;
-//   return totalPrice;
-// }
-
 export { getRandomArrayElement, getRandomInteger, getArrayFromRandomElements, isEscapeKey };

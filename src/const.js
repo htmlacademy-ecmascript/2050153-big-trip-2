@@ -37,7 +37,7 @@ const TYPES = [
 
 const EVENT_COUNT = 3;
 
-const Filters = {
+const FilterType = {
   EVERYTHING: 'everything',
   PAST: 'past',
   PRESENT: 'present',
@@ -45,10 +45,10 @@ const Filters = {
 };
 
 const TextNoEvent = {
-  EVERYTHING: 'Click New Event to create your first point',
-  PAST: 'There are no past events now',
-  PRESENT: 'There are no present events now',
-  FUTURE: 'There are no future events now',
+  'everything': 'Click New Event to create your first point',
+  'past': 'There are no past events now',
+  'present': 'There are no present events now',
+  'future': 'There are no future events now',
 };
 
 const Mode = {
@@ -76,4 +76,4 @@ const UpdateType = {
   MAJOR: 'MAJOR',
 };
 
-export { DESTINATIONS, DESCRIPTIONS, TYPES, EVENT_COUNT, TextNoEvent, Mode, SortTypes, Filters, UserAction, UpdateType };
+export { DESTINATIONS, DESCRIPTIONS, TYPES, EVENT_COUNT, TextNoEvent, Mode, SortTypes, FilterType, UserAction, UpdateType };

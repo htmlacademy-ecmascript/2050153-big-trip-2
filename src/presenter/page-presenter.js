@@ -4,37 +4,48 @@ import EventListView from '../view/list-view.js';
 import NoEventsView from '../view/no-events-view.js';
 import EventPresenter from './event-presenter.js';
 import { render, remove, RenderPosition } from '../framework/render.js';
-import { SortTypes, UpdateType, UserAction } from '../const.js';
+import { SortTypes, UpdateType, UserAction, FilterType } from '../const.js';
 import { sortByDay, sortByTime, sortByPrice } from '../utils/sort.js';
+import { filterEvents } from '../utils/filter.js';
 
 export default class PagePresenter {
   #tripListComponent = new EventListView();
   #sortComponent = null;
-  #noEventComponent = new NoEventsView();
+  #noEventComponent = null;
 
   #pageContainer = null;
   #eventsModel = null;
+  #filterModel = null;
 
   #currentSortType = SortTypes.DEFAULT;
+  #currentFilterType = FilterType.EVERYTHING;
+
   #offers = [];
   #destinations = [];
 
   #eventPresenters = new Map();
 
-  constructor({pageContainer, eventsModel, sorts}) {
+  constructor({pageContainer, eventsModel, filterModel}) {
     this.#pageContainer = pageContainer;
     this.#eventsModel = eventsModel;
+    this.#filterModel = filterModel;
+
     this.#eventsModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   get events() {
+    this.#currentFilterType = this.#filterModel.filter;
+    const events = this.#eventsModel.events;
+    const filteredEvents = filterEvents[this.#currentFilterType](events);
+
     switch (this.#currentSortType) {
       case SortTypes.TIME:
-        return [...this.#eventsModel.events].sort(sortByTime);
+        return filteredEvents.sort(sortByTime);
       case SortTypes.PRICE:
-        return [...this.#eventsModel.events].sort(sortByPrice);
+        return filteredEvents.sort(sortByPrice);
     }
-    return [...this.#eventsModel.events].sort(sortByDay);
+    return filteredEvents.sort(sortByDay);
   }
 
   init() {
@@ -136,6 +147,9 @@ export default class PagePresenter {
   }
 
   #renderNoEvents() {
+    this.#noEventComponent = new NoEventsView({
+      filterType: this.#currentFilterType
+    });
     render(this.#noEventComponent, this.#pageContainer);
   }
 
@@ -148,10 +162,13 @@ export default class PagePresenter {
     this.#eventPresenters.clear();
 
     remove(this.#sortComponent);
-    remove(this.#noEventComponent);
+    
+    if (this.#noEventComponent) {
+      remove(this.#noEventComponent);
+    }
 
     if (resetSortType) {
-      this.#currentSortType = SortType.DEFAULT;
+      this.#currentSortType = SortTypes.DEFAULT;
     }
   }
 

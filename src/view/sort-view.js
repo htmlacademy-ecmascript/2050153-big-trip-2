@@ -7,7 +7,7 @@ function createSortTemplate(sortType, currentSortType) {
 
   return (
     `<div class="trip-sort__item  trip-sort__item--${sortType}">
-      <input id="sort-${sortType}" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" data-sort-type="${sortType}" value="sort-${sortType}" ${isDisabled} ${sortType === currentSortType ? 'checked' : ''}>
+      <input id="sort-${sortType}" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" data-sort-type="${sortType}" value="sort-${sortType}" ${sortType === currentSortType ? 'checked' : ''} ${isDisabled}>
       <label class="trip-sort__btn" for="sort-${sortType}">${capitalizeWords(sortType)}</label>
     </div>`
   );
