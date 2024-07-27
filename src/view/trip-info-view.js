@@ -2,9 +2,6 @@ import AbstractView from '../framework/view/abstract-view.js';
 import { getTotalPrice, getOfferById } from '../utils/event.js';
 
 function createTripInfoTemplate(events, dataOffers) {
-  // console.log(events, dataOffers);
-  // const eventOffers = getOfferById(dataOffers, event);
-  // console.log(events, eventOffers);
   return (
     `<section class="trip-main__trip-info  trip-info">
       <div class="trip-info__main">

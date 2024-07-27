@@ -3,7 +3,7 @@ import FormEditView from '../view/form-edit-view.js';
 import { render, replace, remove } from '../framework/render.js';
 import { isEscapeKey } from '../utils/utils.js';
 import { isEventInPresent, isEventInPast, isEventInFuture } from '../utils/filter.js'
-import { Mode, UserAction, UpdateType } from '../const.js';
+import { Mode, UserAction, UpdateType, FormResetButton } from '../const.js';
 
 export default class EventPresenter {
   #eventListContainer = null;
@@ -45,6 +45,7 @@ export default class EventPresenter {
       event: this.#event,
       dataOffers: this.#dataOffers,
       dataDestinations: this.#dataDestinations,
+      resetButton: FormResetButton.DELETE,
       onFormEditClick: this.#handleFormEditClick,
       onFormSubmit: this.#handleFormSubmit,
       onDeleteClick: this.#handleDeleteClick,

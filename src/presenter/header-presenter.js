@@ -4,6 +4,7 @@ import { RenderPosition, render } from '../framework/render.js';
 
 export default class HeaderPresenter {
   #tripInfoComponent = null;
+
   #headerContainer = null;
   #tripInfoContainer = null;
   #filterContainer = null;

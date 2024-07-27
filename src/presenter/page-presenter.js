@@ -1,8 +1,8 @@
 import EventSortView from '../view/sort-view.js';
 import EventListView from '../view/list-view.js';
-// import PointEditFormView from '../view/new-point-edit-form-view.js';
 import NoEventsView from '../view/no-events-view.js';
 import EventPresenter from './event-presenter.js';
+import NewEventFormPresenter from './add-event-form-presenter.js'
 import { render, remove, RenderPosition } from '../framework/render.js';
 import { SortTypes, UpdateType, UserAction, FilterType } from '../const.js';
 import { sortByDay, sortByTime, sortByPrice } from '../utils/sort.js';
@@ -23,12 +23,19 @@ export default class PagePresenter {
   #offers = [];
   #destinations = [];
 
+  #newEventFormPresenter = null;
   #eventPresenters = new Map();
 
-  constructor({pageContainer, eventsModel, filterModel}) {
+  constructor({pageContainer, eventsModel, filterModel, onNewEventDestroy}) {
     this.#pageContainer = pageContainer;
     this.#eventsModel = eventsModel;
     this.#filterModel = filterModel;
+
+    this.#newEventFormPresenter = new NewEventFormPresenter({
+      eventListContainer: this.#tripListComponent.element,
+      onDataChange: this.#handleViewAction,
+      onDestroy: onNewEventDestroy
+    });
 
     this.#eventsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
@@ -56,7 +63,14 @@ export default class PagePresenter {
     this.#renderTripList();
   }
 
+  createEvent() {
+    this.#currentSortType = SortTypes.DEFAULT;
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    this.#newEventFormPresenter.init(this.#offers, this.#destinations);
+  }
+
   #handleModeChange = () => {
+    this.#newEventFormPresenter.destroy();
     this.#eventPresenters.forEach((presenter) => presenter.resetView());
   };
 
@@ -158,11 +172,12 @@ export default class PagePresenter {
   }
 
   #clearTripList({ resetSortType = false } = {}) {
+    this.#newEventFormPresenter.destroy();
     this.#eventPresenters.forEach((presenter) => presenter.destroy());
     this.#eventPresenters.clear();
 
     remove(this.#sortComponent);
-    
+
     if (this.#noEventComponent) {
       remove(this.#noEventComponent);
     }

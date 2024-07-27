@@ -76,4 +76,19 @@ const UpdateType = {
   MAJOR: 'MAJOR',
 };
 
-export { DESTINATIONS, DESCRIPTIONS, TYPES, EVENT_COUNT, TextNoEvent, Mode, SortTypes, FilterType, UserAction, UpdateType };
+const FormResetButton = {
+  DELETE: 'Delete',
+  CANCEL: 'Cancel'
+}
+
+const BLANK_POINT = {
+  basePrice: 0,
+  dateFrom: '',
+  dateTo: '',
+  destination: '',
+  isFavorite: false,
+  offers: [],
+  type: 'flight'
+};
+
+export { DESTINATIONS, DESCRIPTIONS, TYPES, EVENT_COUNT, TextNoEvent, Mode, SortTypes, FilterType, UserAction, UpdateType, FormResetButton, BLANK_POINT };
