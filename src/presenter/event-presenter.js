@@ -1,8 +1,9 @@
 import EventItemView from '../view/event-view.js';
 import FormEditView from '../view/form-edit-view.js';
 import { render, replace, remove } from '../framework/render.js';
-import { isEscapeKey, isEnterKey } from '../utils/utils.js';
-import { Mode } from '../const.js';
+import { isEscapeKey } from '../utils/utils.js';
+import { isEventInPresent, isEventInPast, isEventInFuture } from '../utils/filter.js'
+import { Mode, UserAction, UpdateType, FormResetButton } from '../const.js';
 
 export default class EventPresenter {
   #eventListContainer = null;
@@ -44,8 +45,11 @@ export default class EventPresenter {
       event: this.#event,
       dataOffers: this.#dataOffers,
       dataDestinations: this.#dataDestinations,
-      onFormEditClick: this.#handleFormEditClick,
-      onFormSubmit: this.#handleFormSubmit,
+      resetButton: FormResetButton.DELETE,
+      isNewForm: false,
+      onFormEditClick: this._handleFormEditClick,
+      onFormSubmit: this._handleEventFormSubmit,
+      onResetClick: this._handleDeleteClick,
     });
 
     if (prevEventComponent === null || prevFormEditComponent === null) {
@@ -94,30 +98,51 @@ export default class EventPresenter {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
       this.#formEditComponent.reset(this.#event);
-      // console.log(1, this.#formEditComponent);
       this.#replaceFormToEvent();
     }
   };
 
   #handleFavoriteClick = () => {
-    this.#handleDataChange({...this.#event, isFavorite: !this.#event.isFavorite});
+    this.#handleDataChange(
+      UserAction.UPDATE_EVENT,
+      UpdateType.MINOR,
+      {...this.#event, isFavorite: !this.#event.isFavorite},
+    );
   };
 
   #handleEditClick = () => {
     this.#replaceEventToForm();
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
-  #handleFormEditClick = () => {
-    this.#formEditComponent.reset(this.#event);
-    // console.log(2, this.#formEditComponent);
+  _handleFormEditClick = () => {
     this.#replaceFormToEvent();
+    document.addEventListener('keydown', this.#escKeyDownHandler);
   };
 
-  #handleFormSubmit = (event) => {
-    this.#handleDataChange(event);
-    // this.#formEditComponent.reset(event);
-    // this.#eventComponent.reset(event);
-    // console.log(3, this.#formEditComponent);
+  _handleEventFormSubmit = (update) => {
+    // Проверяем, поменялись ли в задаче данные, которые попадают под фильтрацию,
+    // а значит требуют перерисовки списка - если таких нет, это PATCH-обновление
+    const isMinorUpdate =
+      isEventInPast(this.#event.dateTo) !== isEventInPast(update.dateTo) ||
+      isEventInPresent(this.#event.dateFrom, this.#event.dateTo) !== isEventInPresent(update.dateFrom, update.dateTo) ||
+      isEventInFuture(this.#event.dateFrom) !== isEventInFuture(update.dateFrom);
+
+    this.#handleDataChange(
+      UserAction.UPDATE_EVENT,
+      isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
+      update
+    );
+
     this.#replaceFormToEvent();
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
+  };
+
+  _handleResetClick = (event) => {
+    this.#handleDataChange(
+      UserAction.DELETE_EVENT,
+      UpdateType.MINOR,
+      event,
+    );
   };
 }

@@ -35,7 +35,9 @@ const TYPES = [
   'restaurant'
 ];
 
-const Filters = {
+const EVENT_COUNT = 3;
+
+const FilterType = {
   EVERYTHING: 'everything',
   PAST: 'past',
   PRESENT: 'present',
@@ -43,10 +45,10 @@ const Filters = {
 };
 
 const TextNoEvent = {
-  EVERYTHING: 'Click New Event to create your first point',
-  PAST: 'There are no past events now',
-  PRESENT: 'There are no present events now',
-  FUTURE: 'There are no future events now',
+  'everything': 'Click New Event to create your first point',
+  'past': 'There are no past events now',
+  'present': 'There are no present events now',
+  'future': 'There are no future events now',
 };
 
 const Mode = {
@@ -54,7 +56,7 @@ const Mode = {
   EDITING: 'EDITING',
 };
 
-const SortType = {
+const SortTypes = {
   DEFAULT: 'day',
   EVENT: 'event',
   TIME: 'time',
@@ -62,4 +64,31 @@ const SortType = {
   OFFERS: 'offers',
 };
 
-export { DESTINATIONS, DESCRIPTIONS, TYPES, TextNoEvent, Mode, SortType, Filters };
+const UserAction = {
+  UPDATE_EVENT: 'UPDATE_EVENT',
+  ADD_EVENT: 'ADD_EVENT',
+  DELETE_EVENT: 'DELETE_EVENT',
+};
+
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
+const FormResetButton = {
+  DELETE: 'Delete',
+  CANCEL: 'Cancel'
+}
+
+const BLANK_POINT = {
+  basePrice: 0,
+  dateFrom: '',
+  dateTo: '',
+  destination: '',
+  isFavorite: false,
+  offers: [],
+  type: 'flight'
+};
+
+export { DESTINATIONS, DESCRIPTIONS, TYPES, EVENT_COUNT, TextNoEvent, Mode, SortTypes, FilterType, UserAction, UpdateType, FormResetButton, BLANK_POINT };

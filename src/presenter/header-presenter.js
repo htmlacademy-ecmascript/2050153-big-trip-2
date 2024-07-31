@@ -1,42 +1,63 @@
-import EventFilterView from '../view/filter-view.js';
+import FilterPresenter from '../presenter/filter-presenter.js';
 import TripInfoView from '../view/trip-info-view.js';
-import { RenderPosition, render } from '../framework/render.js';
+import { RenderPosition, render, remove } from '../framework/render.js';
 
 export default class HeaderPresenter {
-  #tripInfoView = new TripInfoView();
-  #eventFilterView = new EventFilterView();
-  #headerContainer = null;
-  #eventsModel = null;
-  #pageEvents = [];
+  #tripInfoComponent = null;
 
-  constructor({headerContainer, eventsModel}) {
+  #headerContainer = null;
+  #tripInfoContainer = null;
+  #filterContainer = null;
+
+  #eventsModel = null;
+  #filterModel = null;
+
+  #filterPresenter = null;
+
+  #dataOffers = [];
+  #events = [];
+
+  constructor({headerContainer, eventsModel, filterModel}) {
     this.#headerContainer = headerContainer;
-    this.tripInfoContainer = this.#headerContainer.querySelector('.trip-main');
-    this.eventFilterContainer = this.#headerContainer.querySelector('.trip-controls__filters');
+    this.#tripInfoContainer = this.#headerContainer.querySelector('.trip-main');
+    this.#filterContainer = this.#headerContainer.querySelector('.trip-controls__filters');
     this.#eventsModel = eventsModel;
+    this.#filterModel = filterModel;
   }
 
   init() {
-    this.#pageEvents = [...this.#eventsModel.events];
+    this.#events = this.#eventsModel.events;
+    this.#dataOffers = this.#eventsModel.offers;
 
     this.#renderTripInfo();
     this.#renderFilters();
   }
 
+  destroy() {
+    if (this.#tripInfoComponent === null) {
+      return;
+    }
+
+    remove(this.#tripInfoComponent);
+    this.#tripInfoComponent = null;
+
+    this.#filterPresenter.destroy();
+  }
+
   #renderTripInfo() {
-    render(this.#tripInfoView, this.tripInfoContainer, RenderPosition.AFTERBEGIN);
+    this.#tripInfoComponent = new TripInfoView({
+      events: this.#events,
+      dataOffers: this.#dataOffers,
+    });
+    render(this.#tripInfoComponent, this.#tripInfoContainer, RenderPosition.AFTERBEGIN);
   }
 
   #renderFilters() {
-    render(this.#eventFilterView, this.eventFilterContainer);
-
-    if (this.#pageEvents.length === 0) {
-      const filterInputs = document.querySelectorAll('.trip-filters__filter-input');
-      disdableFilters(filterInputs);
-    }
-
-    function disdableFilters(elements) {
-      elements.forEach((i) => (i).setAttribute('disabled', 'disabled'));
-    }
+    this.#filterPresenter = new FilterPresenter({
+      filterContainer: this.#filterContainer,
+      eventsModel: this.#eventsModel,
+      filterModel: this.#filterModel,
+    });
+    this.#filterPresenter.init();
   }
 }
