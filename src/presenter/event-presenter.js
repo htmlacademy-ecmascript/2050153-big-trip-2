@@ -46,9 +46,10 @@ export default class EventPresenter {
       dataOffers: this.#dataOffers,
       dataDestinations: this.#dataDestinations,
       resetButton: FormResetButton.DELETE,
-      onFormEditClick: this.#handleFormEditClick,
-      onFormSubmit: this.#handleFormSubmit,
-      onDeleteClick: this.#handleDeleteClick,
+      isNewForm: false,
+      onFormEditClick: this._handleFormEditClick,
+      onFormSubmit: this._handleEventFormSubmit,
+      onResetClick: this._handleDeleteClick,
     });
 
     if (prevEventComponent === null || prevFormEditComponent === null) {
@@ -114,12 +115,12 @@ export default class EventPresenter {
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
-  #handleFormEditClick = () => {
+  _handleFormEditClick = () => {
     this.#replaceFormToEvent();
     document.addEventListener('keydown', this.#escKeyDownHandler);
   };
 
-  #handleFormSubmit = (update) => {
+  _handleEventFormSubmit = (update) => {
     // Проверяем, поменялись ли в задаче данные, которые попадают под фильтрацию,
     // а значит требуют перерисовки списка - если таких нет, это PATCH-обновление
     const isMinorUpdate =
@@ -137,7 +138,7 @@ export default class EventPresenter {
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
-  #handleDeleteClick = (event) => {
+  _handleResetClick = (event) => {
     this.#handleDataChange(
       UserAction.DELETE_EVENT,
       UpdateType.MINOR,

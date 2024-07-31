@@ -13,27 +13,31 @@ const filterModel = new FilterModel();
 
 newEventButton.addEventListener('click', handleNewEventButtonClick);
 
-const headerPresenter = new HeaderPresenter({
-  headerContainer: headerElement,
-  filterModel,
-  eventsModel,
-});
+// const headerPresenter = new HeaderPresenter({
+//   headerContainer: headerElement,
+//   filterModel,
+//   eventsModel,
+// });
 
 const pagePresenter = new PagePresenter({
   pageContainer: pageMainSortElement,
+  headerContainer: headerElement,
   eventsModel,
   filterModel,
   onNewEventDestroy: handleNewEventFormClose
 });
 
-function handleNewEventFormClose() {
+function handleNewEventFormClose(evt) {
+  // evt.preventDefault();
   newEventButton.disabled = false;
 }
 
-function handleNewEventButtonClick() {
+function handleNewEventButtonClick(evt) {
+  // evt.preventDefault();
+
   pagePresenter.createEvent();
   newEventButton.disabled = true;
 }
 
-headerPresenter.init();
+// headerPresenter.init();
 pagePresenter.init();

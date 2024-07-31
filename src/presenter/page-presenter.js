@@ -1,6 +1,7 @@
 import EventSortView from '../view/sort-view.js';
 import EventListView from '../view/list-view.js';
 import NoEventsView from '../view/no-events-view.js';
+import HeaderPresenter from './header-presenter.js';
 import EventPresenter from './event-presenter.js';
 import NewEventFormPresenter from './add-event-form-presenter.js'
 import { render, remove, RenderPosition } from '../framework/render.js';
@@ -14,6 +15,7 @@ export default class PagePresenter {
   #noEventComponent = null;
 
   #pageContainer = null;
+  #headerContainer = null;
   #eventsModel = null;
   #filterModel = null;
 
@@ -25,9 +27,11 @@ export default class PagePresenter {
 
   #newEventFormPresenter = null;
   #eventPresenters = new Map();
+  #headerPresenter = null;
 
-  constructor({pageContainer, eventsModel, filterModel, onNewEventDestroy}) {
+  constructor({pageContainer, headerContainer, eventsModel, filterModel, onNewEventDestroy}) {
     this.#pageContainer = pageContainer;
+    this.#headerContainer = headerContainer;
     this.#eventsModel = eventsModel;
     this.#filterModel = filterModel;
 
@@ -59,6 +63,7 @@ export default class PagePresenter {
     this.#offers = [...this.#eventsModel.offers];
     this.#destinations = [...this.#eventsModel.destinations];
 
+    this.#renderHeader();
     this.#renderSort();
     this.#renderTripList();
   }
@@ -81,7 +86,7 @@ export default class PagePresenter {
    * update - обновленные данные
    */
   #handleViewAction = (actionType, updateType, update) => {
-    console.log(actionType, updateType, update);
+    // console.log(actionType, updateType, update);
     switch (actionType) {
       case UserAction.UPDATE_EVENT:
         this.#eventsModel.updateEvent(updateType, update);
@@ -110,16 +115,22 @@ export default class PagePresenter {
       case UpdateType.PATCH:
         this.#eventPresenters.get(data.id).init(data, this.#offers, this.#destinations);
         this.#clearTripList();
+        this.#clearHeader();
+        this.#renderHeader();
         this.#renderSort();
         this.#renderTripList();
         break;
       case UpdateType.MINOR:
         this.#clearTripList();
+        // this.#clearHeader();
+        // this.#renderHeader();
         this.#renderSort();
         this.#renderTripList();
         break;
       case UpdateType.MAJOR:
         this.#clearTripList({resetSortType: true});
+        this.#clearHeader();
+        this.#renderHeader();
         this.#renderSort();
         this.#renderTripList();
         break;
@@ -165,10 +176,25 @@ export default class PagePresenter {
       filterType: this.#currentFilterType
     });
     render(this.#noEventComponent, this.#pageContainer);
+    remove(this.#sortComponent);
   }
 
   #renderEvents(events) {
     events.forEach((event) => this.#renderEvent(event, this.#offers, this.#destinations));
+  }
+
+  #renderHeader() {
+    this.#headerPresenter = new HeaderPresenter({
+      headerContainer: this.#headerContainer,
+      filterModel: this.#filterModel,
+      eventsModel: this.#eventsModel,
+    });
+    this.#headerPresenter.init();
+  }
+
+  #clearHeader() {
+    this.#headerPresenter.destroy();
+    // this.#headerPresenter.clear();
   }
 
   #clearTripList({ resetSortType = false } = {}) {
@@ -188,7 +214,7 @@ export default class PagePresenter {
   }
 
   #renderTripList() {
-    const events = this.events;
+    const events = this.events.slice(0, this.events.length);;
     render(this.#tripListComponent, this.#pageContainer);
 
     if (this.events.length === 0) {

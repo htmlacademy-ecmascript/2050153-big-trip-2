@@ -41,6 +41,7 @@ function createOfferTemplate(offer, offers) {
 export function createOfferContainerTemplate(dataOffers, event) {
   const { offers } = event;
   const eventOffers = getPointTypeOffer(dataOffers, event);
+  
   if (eventOffers.length !== 0) {
     return (
       `<section class="event__section  event__section--offers">
@@ -89,8 +90,18 @@ export function createDestinationTemplate(destination) {
   return '';
 }
 
-function createPriceTemplate(id, basePrice) {
-
+function createPriceTemplate(id, basePrice, isNewForm) {
+  if (isNewForm) {
+    return (
+      `<div class="event__field-group  event__field-group--price">
+        <label class="event__label" for="event-price-${id}">
+          <span class="visually-hidden">Price</span>
+          &euro;
+        </label>
+        <input class="event__input  event__input--price" id="event-price-${id}" type="number" name="event-price" value=${basePrice} required>
+      </div>`
+    );
+  }
   return (
     `<div class="event__field-group  event__field-group--price">
       <label class="event__label" for="event-price-${id}">
@@ -102,7 +113,18 @@ function createPriceTemplate(id, basePrice) {
   );
 }
 
-function createDurationTemplate(id, dateFrom, dateTo) {
+function createDurationTemplate(id, dateFrom, dateTo, isNewForm) {
+  if (isNewForm) {
+    return (
+      `<div class="event__field-group  event__field-group--time">
+        <label class="visually-hidden" for="event-start-time-${id}">From</label>
+        <input class="event__input  event__input--time" id="event-start-time-${id}" type="text" name="event-start-time" value=${humanizeDate(dateFrom, dateFormat.DATE)} required>
+        &mdash;
+        <label class="visually-hidden" for="event-end-time-${id}">To</label>
+        <input class="event__input  event__input--time" id="event-end-time-${id}" type="text" name="event-end-time" value=${humanizeDate(dateTo, dateFormat.DATE)} required>
+      </div>`
+    );
+  }
   return (
     `<div class="event__field-group  event__field-group--time">
       <label class="visually-hidden" for="event-start-time-${id}">From</label>
@@ -134,7 +156,7 @@ function createEventTypeTemplate(id, type) {
   );
 }
 
-function createHeaderTypeDestinationTemplate(type, destination, id) {
+function createHeaderTypeDestinationTemplate(type, destination, id, isNewForm) {
   if (destination !== undefined) {
     return (
       `<div class="event__field-group  event__field-group--destination">
@@ -147,34 +169,33 @@ function createHeaderTypeDestinationTemplate(type, destination, id) {
         </datalist>
       </div>`
     );
+  } else if (isNewForm) {
+    return (
+      `<div class="event__field-group  event__field-group--destination">
+        <label class="event__label  event__type-output" for="event-destination-${id}">
+          ${capitalizeWords(type)}
+        </label>
+        <input class="event__input  event__input--destination" id="event-destination-${id}" type="text" name="event-destination" value='' list="destination-list-${id}" required>
+        <datalist id="destination-list-${id}">
+          ${DESTINATIONS.map((item) => createDestinationNameTemplate(item)).join('')}
+        </datalist>
+      </div>`
+    );
   }
-  return (
-    `<div class="event__field-group  event__field-group--destination">
-      <label class="event__label  event__type-output" for="event-destination-${id}">
-        ${capitalizeWords(type)}
-      </label>
-      <input class="event__input  event__input--destination" id="event-destination-${id}" type="text" name="event-destination" value='' list="destination-list-${id}">
-      <datalist id="destination-list-${id}">
-        ${DESTINATIONS.map((item) => createDestinationNameTemplate(item)).join('')}
-      </datalist>
-    </div>`
-  );
 }
 
-export function createEventFormTemplate({dataOffers, dataDestinations, resetButton, state}) {
-  console.log(dataOffers, dataDestinations, resetButton, state);
+export function createEventFormTemplate({dataOffers, dataDestinations, resetButton, isNewForm, state}) {
   const { id, type, dateFrom, dateTo, basePrice } = state;
   const destination = getDestinationById(dataDestinations, state);
-  console.log(destination);
 
   return (
     `<li class="trip-events__item">
       <form class="event event--edit" action="#" method="post">
         <header class="event__header">
           ${createEventTypeTemplate(id, type)}
-          ${createHeaderTypeDestinationTemplate(type, destination, id)}
-          ${createDurationTemplate(id, dateFrom, dateTo)}
-          ${createPriceTemplate(id, basePrice)}
+          ${createHeaderTypeDestinationTemplate(type, destination, id, isNewForm)}
+          ${createDurationTemplate(id, dateFrom, dateTo, isNewForm)}
+          ${createPriceTemplate(id, basePrice, isNewForm)}
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
           <button class="event__reset-btn" type="reset">${resetButton}</button>
           <button class="event__rollup-btn" type="button">
@@ -194,15 +215,24 @@ export default class EventFormView extends AbstractStatefulView {
   #dataOffers = null;
   #dataDestinations = null;
   #resetButton = null;
+  #isNewForm = null;
+
+  _handleFormEditClick = null;
+  _handleEventFormSubmit = null;
+  _handleResetClick = null;
 
   #datepickerFrom = null;
   #datepickerTo = null;
 
-  constructor({event = BLANK_POINT, dataOffers, dataDestinations, resetButton}) {
+  constructor({event = BLANK_POINT, dataOffers, dataDestinations, resetButton, isNewForm, onFormSubmit, onFormEditClick, onResetClick}) {
     super();
     this.#dataOffers = dataOffers;
     this.#dataDestinations = dataDestinations;
     this.#resetButton = resetButton;
+    this.#isNewForm = isNewForm;
+    this._handleFormEditClick = onFormEditClick;
+    this._handleEventFormSubmit = onFormSubmit;
+    this._handleResetClick = onResetClick;
 
     this._setState(EventFormView.parseEventToState({event}));
     this._restoreHandlers();
@@ -213,6 +243,7 @@ export default class EventFormView extends AbstractStatefulView {
       dataDestinations: this.#dataDestinations,
       dataOffers: this.#dataOffers,
       resetButton: this.#resetButton,
+      isNewForm: this.#isNewForm,
       state: this._state,
     });
   }
@@ -242,11 +273,19 @@ export default class EventFormView extends AbstractStatefulView {
       .addEventListener('change', this.#offersChangeHandler);
     this.element.querySelector('.event__input--price')
       .addEventListener('change', this.#priceChangeHandler);
+    this.element.querySelector('form')
+      .addEventListener('submit', this._formSubmitHandler);
+    this.element.querySelector('.event__reset-btn')
+      .addEventListener('click', this._formResetClickHandler);
+    this.element.querySelector('.event__rollup-btn')
+      .addEventListener('click', this._editClickHandler);
 
     this.#setDatepickers();
   };
 
   #typeChangeHandler = (evt) => {
+    evt.preventDefault();
+
     this.updateElement({
       type: evt.target.value,
       offers: [],
@@ -254,6 +293,8 @@ export default class EventFormView extends AbstractStatefulView {
   };
 
   #destinationChangeHandler = (evt) => {
+    evt.preventDefault();
+
     const selectedDestination = this.#dataDestinations.find((eventDestination) => eventDestination.name === evt.target.value);
     const selectedDestinationId = (selectedDestination) ? selectedDestination.id : null;
     this.updateElement({
@@ -262,6 +303,8 @@ export default class EventFormView extends AbstractStatefulView {
   };
 
   #offersChangeHandler = (evt) => {
+    evt.preventDefault();
+
     const checkedBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
     this._setState({
       offers: checkedBoxes.map((item) => (item.id)),
@@ -320,6 +363,21 @@ export default class EventFormView extends AbstractStatefulView {
       },
     );
   }
+
+  _formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this._handleEventFormSubmit(EventFormView.parseStateToEvent(this._state));
+  };
+
+  _formResetClickHandler = (evt) => {
+    evt.preventDefault();
+    this._handleResetClick(EventFormView.parseStateToEvent(this._state));
+  };
+
+  _editClickHandler = (evt) => {
+    evt.preventDefault();
+    this._handleFormEditClick();
+  };
 
   static parseEventToState = ({event}) => ({...event});
 

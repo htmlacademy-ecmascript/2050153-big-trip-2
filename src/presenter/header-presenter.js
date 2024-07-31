@@ -1,6 +1,6 @@
 import FilterPresenter from '../presenter/filter-presenter.js';
 import TripInfoView from '../view/trip-info-view.js';
-import { RenderPosition, render } from '../framework/render.js';
+import { RenderPosition, render, remove } from '../framework/render.js';
 
 export default class HeaderPresenter {
   #tripInfoComponent = null;
@@ -12,10 +12,10 @@ export default class HeaderPresenter {
   #eventsModel = null;
   #filterModel = null;
 
+  #filterPresenter = null;
+
   #dataOffers = [];
   #events = [];
-
-  #filterPresenter = new Map();
 
   constructor({headerContainer, eventsModel, filterModel}) {
     this.#headerContainer = headerContainer;
@@ -33,6 +33,17 @@ export default class HeaderPresenter {
     this.#renderFilters();
   }
 
+  destroy() {
+    if (this.#tripInfoComponent === null) {
+      return;
+    }
+
+    remove(this.#tripInfoComponent);
+    this.#tripInfoComponent = null;
+
+    this.#filterPresenter.destroy();
+  }
+
   #renderTripInfo() {
     this.#tripInfoComponent = new TripInfoView({
       events: this.#events,
@@ -42,11 +53,11 @@ export default class HeaderPresenter {
   }
 
   #renderFilters() {
-    const filterPresenter = new FilterPresenter({
+    this.#filterPresenter = new FilterPresenter({
       filterContainer: this.#filterContainer,
       eventsModel: this.#eventsModel,
       filterModel: this.#filterModel,
     });
-    filterPresenter.init();
+    this.#filterPresenter.init();
   }
 }

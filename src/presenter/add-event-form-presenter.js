@@ -32,9 +32,10 @@ export default class NewEventFormPresenter {
       dataOffers: this.#dataOffers,
       dataDestinations: this.#dataDestinations,
       resetButton: FormResetButton.CANCEL,
-      onFormEditClick: this.#handleFormEditClick,
-      onFormSubmit: this.#handleNewEventFormSubmit,
-      onCancelClick: this.#handleCancelClick,
+      isNewForm: true,
+      onFormEditClick: this._handleFormEditClick,
+      onFormSubmit: this._handleEventFormSubmit,
+      onResetClick: this._handleResetClick,
     });
 
     render(this.#newEventFormComponent, this.#eventListContainer, RenderPosition.AFTERBEGIN);
@@ -55,7 +56,7 @@ export default class NewEventFormPresenter {
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   }
 
-  #handleNewEventFormSubmit = (event) => {
+  _handleEventFormSubmit = (event) => {
     this.#handleDataChange(
       UserAction.ADD_EVENT,
       UpdateType.MINOR,
@@ -66,11 +67,11 @@ export default class NewEventFormPresenter {
     this.destroy();
   };
 
-  #handleCancelClick = () => {
+  _handleResetClick = () => {
     this.destroy();
   };
 
-  #handleFormEditClick = () => {
+  _handleFormEditClick = () => {
     this.destroy();
   };
 

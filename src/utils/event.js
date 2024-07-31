@@ -2,6 +2,9 @@ import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 
 dayjs.extend(duration);
+// eslint-disable-next-line no-undef
+const utc = require('dayjs/plugin/utc');
+dayjs.extend(utc);
 
 const MINUTES_IN_HOUR = 60;
 const SECONDS_IN_MINUTS = 60;
@@ -18,7 +21,7 @@ const dateFormat = {
 };
 
 // Приобразование данных по дате в нужный формат
-const humanizeDate = (eventDate, format) => eventDate ? dayjs(eventDate).format(format) : '';
+const humanizeDate = (eventDate, format) => eventDate ? dayjs.utc(eventDate).format(format) : '';
 
 // Приобразование формата отображения текста с первой заглавной буквой.
 // Пример: "Название Города"
@@ -136,7 +139,7 @@ const getTotalEventPrice = (event, offers) => {
       totalOfferesPrice += offer.price;
   });
 
-  const totalEventPrice = event.basePrice + totalOfferesPrice;
+  const totalEventPrice = Number(event.basePrice) + totalOfferesPrice;
   return totalEventPrice;
 };
 

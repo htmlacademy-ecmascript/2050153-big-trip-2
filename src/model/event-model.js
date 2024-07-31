@@ -13,6 +13,10 @@ export default class EventsModel extends Observable {
     return this.#events;
   }
 
+  // set events(events) {
+  //   this.#events = [...events];
+  // }
+
   updateEvent(updateType, update) {
     const index = this.#events.findIndex((event) => event.id === update.id);
 
@@ -30,6 +34,7 @@ export default class EventsModel extends Observable {
   }
 
   addEvent(updateType, update) {
+    // this.#events.push(update);
     this.#events = [
       update,
       ...this.#events,
